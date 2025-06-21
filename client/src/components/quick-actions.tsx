@@ -1,7 +1,10 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useState } from 'react';
 import { Zap, Gamepad, Monitor, Eraser, Download, Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { OrganizationTemplate } from '@/types/organization';
 import { BUILTIN_TEMPLATES } from '@/lib/templates';
 import { readJsonFile, downloadJson } from '@/lib/file-utils';
@@ -16,6 +19,8 @@ interface QuickActionsProps {
 export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearInterface }: QuickActionsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [templateName, setTemplateName] = useState('');
 
   const handleLoadBuiltinTemplate = (templateKey: string) => {
     const template = BUILTIN_TEMPLATES[templateKey];
@@ -62,15 +67,38 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
   }, [onLoadTemplate, toast]);
 
   const handleSaveTemplate = useCallback(() => {
+    setTemplateName('');
+    setShowSaveDialog(true);
+  }, []);
+
+  const handleConfirmSave = useCallback(() => {
+    if (!templateName.trim()) {
+      toast({
+        title: "Template name required",
+        description: "Please enter a name for your template",
+        variant: "destructive"
+      });
+      return;
+    }
+
     try {
       const template = onSaveTemplate();
-      const fileName = `${template.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_template.json`;
-      downloadJson(template, fileName);
+      // Update template with user-provided name
+      const updatedTemplate = {
+        ...template,
+        name: templateName.trim()
+      };
+      
+      const fileName = `${templateName.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase()}_template.json`;
+      downloadJson(updatedTemplate, fileName);
       
       toast({
         title: "Template saved",
-        description: "Template has been downloaded successfully"
+        description: `${templateName} has been downloaded successfully`
       });
+      
+      setShowSaveDialog(false);
+      setTemplateName('');
     } catch (error) {
       toast({
         title: "Error saving template",
@@ -78,7 +106,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
         variant: "destructive"
       });
     }
-  }, [onSaveTemplate, toast]);
+  }, [templateName, onSaveTemplate, toast]);
 
   const handleClearInterface = () => {
     if (confirm('Are you sure you want to clear the interface? This will remove all current organization items.')) {
@@ -169,6 +197,48 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
           onChange={handleFileChange}
         />
       </CardContent>
+
+      {/* Save Template Dialog */}
+      <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Save Template</DialogTitle>
+          </DialogHeader>
+          
+          <div className="py-4">
+            <Label htmlFor="template-name" className="text-sm font-medium">
+              Template Name
+            </Label>
+            <Input
+              id="template-name"
+              value={templateName}
+              onChange={(e) => setTemplateName(e.target.value)}
+              placeholder="Enter template name"
+              className="mt-2"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleConfirmSave();
+                }
+              }}
+            />
+          </div>
+          
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowSaveDialog(false);
+                setTemplateName('');
+              }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmSave}>
+              Save Template
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
