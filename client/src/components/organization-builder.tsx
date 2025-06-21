@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Plus, Trash2, File, Files, Folder, ChevronDown } from 'lucide-react';
+import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -26,12 +26,31 @@ export default function OrganizationBuilder({
   onTableNameChange
 }: OrganizationBuilderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [editingLabels, setEditingLabels] = useState<{ [key: string]: boolean }>({});
+  const [editingValues, setEditingValues] = useState<{ [key: string]: string }>({});
 
   const handleFileSelect = (itemId: string, files: FileList | null) => {
     if (!files) return;
     
     const fileArray = Array.from(files);
     onUpdateItem(itemId, { files: fileArray });
+  };
+
+  const startEditingLabel = (itemId: string, currentLabel: string) => {
+    setEditingLabels(prev => ({ ...prev, [itemId]: true }));
+    setEditingValues(prev => ({ ...prev, [itemId]: currentLabel }));
+  };
+
+  const saveLabel = (itemId: string) => {
+    const newLabel = editingValues[itemId] || '';
+    onUpdateItem(itemId, { label: newLabel });
+    setEditingLabels(prev => ({ ...prev, [itemId]: false }));
+    setEditingValues(prev => ({ ...prev, [itemId]: '' }));
+  };
+
+  const cancelEditingLabel = (itemId: string) => {
+    setEditingLabels(prev => ({ ...prev, [itemId]: false }));
+    setEditingValues(prev => ({ ...prev, [itemId]: '' }));
   };
 
   const getItemIcon = (type: string) => {
@@ -65,7 +84,7 @@ export default function OrganizationBuilder({
         {items.length > 0 && (
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <h3 className="text-sm font-medium text-blue-900 mb-3">Table Information</h3>
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="table-name" className="text-sm font-medium text-blue-800">
                   Table Name
@@ -75,6 +94,18 @@ export default function OrganizationBuilder({
                   value={tableName}
                   onChange={(e) => onTableNameChange(e.target.value)}
                   placeholder="Enter table name"
+                  className="mt-1 bg-white"
+                />
+              </div>
+              <div>
+                <Label htmlFor="table-location" className="text-sm font-medium text-blue-800">
+                  File Location
+                </Label>
+                <Input
+                  id="table-location"
+                  value={items[0]?.location || ''}
+                  onChange={(e) => onUpdateItem(items[0]?.id || '', { location: e.target.value })}
+                  placeholder="tables/"
                   className="mt-1 bg-white"
                 />
               </div>
@@ -88,9 +119,52 @@ export default function OrganizationBuilder({
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   {getItemIcon(item.type)}
-                  <span className="font-medium text-slate-700 ml-2">
-                    {getItemTypeName(item.type)}
-                  </span>
+                  <div className="flex items-center ml-2">
+                    {editingLabels[item.id] ? (
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          value={editingValues[item.id]}
+                          onChange={(e) => setEditingValues(prev => ({ ...prev, [item.id]: e.target.value }))}
+                          className="text-sm h-7 w-32"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') saveLabel(item.id);
+                            if (e.key === 'Escape') cancelEditingLabel(item.id);
+                          }}
+                          autoFocus
+                        />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => saveLabel(item.id)}
+                          className="h-7 w-7 p-0 text-green-600 hover:text-green-700"
+                        >
+                          <Check className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => cancelEditingLabel(item.id)}
+                          className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <span className="font-medium text-slate-700">
+                          {item.label || getItemTypeName(item.type)}
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => startEditingLabel(item.id, item.label || getItemTypeName(item.type))}
+                          className="ml-1 h-6 w-6 p-0 text-slate-400 hover:text-slate-600"
+                        >
+                          <Edit3 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <Button
                   variant="ghost"
@@ -102,20 +176,9 @@ export default function OrganizationBuilder({
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-3">
-                <div>
-                  <Label htmlFor={`label-${item.id}`} className="text-sm font-medium text-slate-700">
-                    Label
-                  </Label>
-                  <Input
-                    id={`label-${item.id}`}
-                    value={item.label}
-                    onChange={(e) => onUpdateItem(item.id, { label: e.target.value })}
-                    placeholder="Enter label"
-                    className="mt-1"
-                  />
-                </div>
-                <div>
+              {/* Show file location field only for non-first items */}
+              {items.indexOf(item) !== 0 && (
+                <div className="mb-3">
                   <Label htmlFor={`location-${item.id}`} className="text-sm font-medium text-slate-700">
                     File Location
                   </Label>
@@ -127,7 +190,7 @@ export default function OrganizationBuilder({
                     className="mt-1"
                   />
                 </div>
-              </div>
+              )}
 
               {/* File Selection */}
               <div className="mb-3">
