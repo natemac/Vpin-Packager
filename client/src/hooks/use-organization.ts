@@ -19,6 +19,18 @@ export function useOrganization() {
     setItems(prev => [...prev, newItem]);
   }, []);
 
+  const addFirstItem = useCallback((tableFile: File) => {
+    const firstItem: OrganizationItem = {
+      id: nanoid(),
+      type: 'single',
+      label: 'Table File',
+      location: 'tables/',
+      options: { useTableName: true },
+      files: [tableFile]
+    };
+    setItems([firstItem]);
+  }, []);
+
   const updateItem = useCallback((id: string, updates: Partial<OrganizationItem>) => {
     setItems(prev => prev.map(item => 
       item.id === id ? { ...item, ...updates } : item
@@ -63,6 +75,7 @@ export function useOrganization() {
     setTableName,
     setTableFile,
     addItem,
+    addFirstItem,
     updateItem,
     removeItem,
     loadTemplate,

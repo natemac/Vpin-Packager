@@ -31,6 +31,7 @@ export default function FileOrganizer() {
               onFileSelect={(file, name) => {
                 organization.setTableFile(file);
                 organization.setTableName(name);
+                organization.addFirstItem(file);
               }}
               tableName={organization.tableName}
             />
@@ -40,6 +41,8 @@ export default function FileOrganizer() {
               onAddItem={organization.addItem}
               onUpdateItem={organization.updateItem}
               onRemoveItem={organization.removeItem}
+              tableName={organization.tableName}
+              onTableNameChange={organization.setTableName}
             />
           </div>
 

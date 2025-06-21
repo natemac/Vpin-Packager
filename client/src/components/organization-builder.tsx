@@ -13,13 +13,17 @@ interface OrganizationBuilderProps {
   onAddItem: (type: 'single' | 'multiple' | 'folder') => void;
   onUpdateItem: (id: string, updates: Partial<OrganizationItem>) => void;
   onRemoveItem: (id: string) => void;
+  tableName: string;
+  onTableNameChange: (name: string) => void;
 }
 
 export default function OrganizationBuilder({ 
   items, 
   onAddItem, 
   onUpdateItem, 
-  onRemoveItem 
+  onRemoveItem,
+  tableName,
+  onTableNameChange
 }: OrganizationBuilderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -57,6 +61,27 @@ export default function OrganizationBuilder({
         </CardTitle>
       </CardHeader>
       <CardContent>
+        {/* Table Information Section */}
+        {items.length > 0 && (
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h3 className="text-sm font-medium text-blue-900 mb-3">Table Information</h3>
+            <div className="grid grid-cols-1 gap-3">
+              <div>
+                <Label htmlFor="table-name" className="text-sm font-medium text-blue-800">
+                  Table Name
+                </Label>
+                <Input
+                  id="table-name"
+                  value={tableName}
+                  onChange={(e) => onTableNameChange(e.target.value)}
+                  placeholder="Enter table name"
+                  className="mt-1 bg-white"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="space-y-4 mb-6">
           {items.map((item) => (
             <div key={item.id} className="border border-slate-200 rounded-lg p-4 bg-slate-50">
