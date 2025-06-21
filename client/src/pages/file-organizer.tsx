@@ -48,11 +48,6 @@ export default function FileOrganizer() {
 
           {/* Right Column (1/3) */}
           <div className="col-span-4 space-y-6">
-            <FileTreePreview 
-              items={organization.items}
-              tableName={organization.tableName}
-            />
-            
             <PackageGenerator 
               items={organization.items}
               tableName={organization.tableName}
@@ -62,6 +57,11 @@ export default function FileOrganizer() {
               onLoadTemplate={organization.loadTemplate}
               onSaveTemplate={organization.exportTemplate}
               onClearInterface={organization.clearAll}
+            />
+            
+            <FileTreePreview 
+              items={organization.items}
+              tableName={organization.tableName}
             />
           </div>
         </div>

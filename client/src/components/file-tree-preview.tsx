@@ -82,7 +82,7 @@ export default function FileTreePreview({ items, tableName }: FileTreePreviewPro
       <CardContent>
         {fileTree ? (
           <>
-            <div className="space-y-1 max-h-64 overflow-y-auto">
+            <div className="space-y-1">
               <TreeNode node={fileTree} />
             </div>
             
