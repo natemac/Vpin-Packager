@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { OrganizationTemplate } from '@/types/organization';
-import { BUILTIN_TEMPLATES } from '@/lib/templates';
+import { BUILTIN_TEMPLATE_CONFIGS, loadTemplate } from '@/lib/templates';
 import { readJsonFile, downloadJson } from '@/lib/file-utils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,13 +22,24 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [templateName, setTemplateName] = useState('');
 
-  const handleLoadBuiltinTemplate = (templateKey: string) => {
-    const template = BUILTIN_TEMPLATES[templateKey];
-    if (template) {
+  const handleLoadBuiltinTemplate = async (templateKey: string) => {
+    try {
+      const config = BUILTIN_TEMPLATE_CONFIGS[templateKey as keyof typeof BUILTIN_TEMPLATE_CONFIGS];
+      if (!config) {
+        throw new Error('Template not found');
+      }
+      
+      const template = await loadTemplate(config.key);
       onLoadTemplate(template);
       toast({
         title: "Template loaded",
         description: `${template.name} has been loaded successfully`
+      });
+    } catch (error) {
+      toast({
+        title: "Error loading template",
+        description: error instanceof Error ? error.message : "Failed to load template",
+        variant: "destructive"
       });
     }
   };
@@ -162,7 +173,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
                 onClick={() => handleLoadBuiltinTemplate('pinballEmporium')}
               >
                 <Gamepad className="text-blue-600 mr-2 h-4 w-4" />
-                <span className="text-sm font-medium">Pinball Emporium</span>
+                <span className="text-sm font-medium">{BUILTIN_TEMPLATE_CONFIGS.pinballEmporium.name}</span>
               </Button>
               
               <Button
@@ -171,7 +182,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
                 onClick={() => handleLoadBuiltinTemplate('pinupPopper')}
               >
                 <Monitor className="text-green-600 mr-2 h-4 w-4" />
-                <span className="text-sm font-medium">Pinup Popper</span>
+                <span className="text-sm font-medium">{BUILTIN_TEMPLATE_CONFIGS.pinupPopper.name}</span>
               </Button>
             </div>
           </div>
