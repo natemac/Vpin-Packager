@@ -7,14 +7,14 @@ export function useOrganization() {
   const [tableName, setTableName] = useState<string>('');
   const [tableFile, setTableFile] = useState<File | null>(null);
 
-  const addItem = useCallback((type: 'single' | 'multiple' | 'folder') => {
+  const addItem = useCallback((type: 'single' | 'multiple' | 'folder', itemData?: Partial<OrganizationItem>) => {
     const newItem: OrganizationItem = {
       id: nanoid(),
       type,
-      label: '',
-      location: '',
-      options: {},
-      files: []
+      label: itemData?.label || '',
+      location: itemData?.location || '',
+      options: itemData?.options || {},
+      files: itemData?.files || []
     };
     setItems(prev => [...prev, newItem]);
   }, []);

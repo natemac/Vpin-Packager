@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3, Check, X } from 'lucide-react';
+import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,7 @@ import { isImageFile } from '@/lib/file-utils';
 
 interface OrganizationBuilderProps {
   items: OrganizationItem[];
-  onAddItem: (type: 'single' | 'multiple' | 'folder') => void;
+  onAddItem: (type: 'single' | 'multiple' | 'folder', itemData?: Partial<OrganizationItem>) => void;
   onUpdateItem: (id: string, updates: Partial<OrganizationItem>) => void;
   onRemoveItem: (id: string) => void;
   tableName: string;
@@ -28,8 +28,7 @@ export default function OrganizationBuilder({
   onTableNameChange
 }: OrganizationBuilderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [editingLabels, setEditingLabels] = useState<{ [key: string]: boolean }>({});
-  const [editingValues, setEditingValues] = useState<{ [key: string]: string }>({});
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState<'single' | 'multiple' | 'folder' | null>(null);
   const [editingItem, setEditingItem] = useState<string | null>(null);
@@ -103,30 +102,20 @@ export default function OrganizationBuilder({
       
       onUpdateItem(editingItem, updates);
     } else {
-      // Add new item
-      onAddItem(dialogType);
-      // Get the new item and update it with dialog data
-      setTimeout(() => {
-        const newItem = items[items.length - 1];
-        if (newItem) {
-          const updates: Partial<OrganizationItem> = {
-            label: dialogData.label,
-            location: dialogData.location,
-            options: {
-              useTableName: dialogData.useTableName,
-              convertToPng: dialogData.convertToPng,
-              pngCompressionLevel: dialogData.pngCompressionLevel,
-              renameFolder: dialogData.renameFolder
-            }
-          };
-          
-          if (dialogData.files) {
-            updates.files = Array.from(dialogData.files);
-          }
-          
-          onUpdateItem(newItem.id, updates);
-        }
-      }, 0);
+      // Add new item with all data
+      const itemData: Partial<OrganizationItem> = {
+        label: dialogData.label,
+        location: dialogData.location,
+        options: {
+          useTableName: dialogData.useTableName,
+          convertToPng: dialogData.convertToPng,
+          pngCompressionLevel: dialogData.pngCompressionLevel,
+          renameFolder: dialogData.renameFolder
+        },
+        files: dialogData.files ? Array.from(dialogData.files) : []
+      };
+      
+      onAddItem(dialogType, itemData);
     }
     
     setDialogOpen(false);
@@ -147,22 +136,7 @@ export default function OrganizationBuilder({
     });
   };
 
-  const startEditingLabel = (itemId: string, currentLabel: string) => {
-    setEditingLabels(prev => ({ ...prev, [itemId]: true }));
-    setEditingValues(prev => ({ ...prev, [itemId]: currentLabel }));
-  };
 
-  const saveLabel = (itemId: string) => {
-    const newLabel = editingValues[itemId] || '';
-    onUpdateItem(itemId, { label: newLabel });
-    setEditingLabels(prev => ({ ...prev, [itemId]: false }));
-    setEditingValues(prev => ({ ...prev, [itemId]: '' }));
-  };
-
-  const cancelEditingLabel = (itemId: string) => {
-    setEditingLabels(prev => ({ ...prev, [itemId]: false }));
-    setEditingValues(prev => ({ ...prev, [itemId]: '' }));
-  };
 
   const getItemIcon = (type: string) => {
     switch (type) {
