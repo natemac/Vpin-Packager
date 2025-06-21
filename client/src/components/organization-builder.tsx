@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { OrganizationItem } from '@/types/organization';
 import { isImageFile } from '@/lib/file-utils';
 
@@ -29,12 +30,121 @@ export default function OrganizationBuilder({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [editingLabels, setEditingLabels] = useState<{ [key: string]: boolean }>({});
   const [editingValues, setEditingValues] = useState<{ [key: string]: string }>({});
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogType, setDialogType] = useState<'single' | 'multiple' | 'folder' | null>(null);
+  const [editingItem, setEditingItem] = useState<string | null>(null);
+  const [dialogData, setDialogData] = useState({
+    label: '',
+    location: '',
+    files: null as FileList | null,
+    useTableName: false,
+    convertToPng: false,
+    pngCompressionLevel: 'low' as 'none' | 'low' | 'high',
+    renameFolder: false
+  });
 
   const handleFileSelect = (itemId: string, files: FileList | null) => {
     if (!files) return;
     
     const fileArray = Array.from(files);
     onUpdateItem(itemId, { files: fileArray });
+  };
+
+  const openAddDialog = (type: 'single' | 'multiple' | 'folder') => {
+    setDialogType(type);
+    setEditingItem(null);
+    setDialogData({
+      label: getItemTypeName(type),
+      location: '',
+      files: null,
+      useTableName: false,
+      convertToPng: false,
+      pngCompressionLevel: 'low',
+      renameFolder: false
+    });
+    setDialogOpen(true);
+    setDropdownOpen(false);
+  };
+
+  const openEditDialog = (item: OrganizationItem) => {
+    setDialogType(item.type);
+    setEditingItem(item.id);
+    setDialogData({
+      label: item.label,
+      location: item.location,
+      files: null,
+      useTableName: item.options.useTableName || false,
+      convertToPng: item.options.convertToPng || false,
+      pngCompressionLevel: item.options.pngCompressionLevel || 'low',
+      renameFolder: item.options.renameFolder || false
+    });
+    setDialogOpen(true);
+  };
+
+  const handleDialogSave = () => {
+    if (!dialogType) return;
+
+    if (editingItem) {
+      // Update existing item
+      const updates: Partial<OrganizationItem> = {
+        label: dialogData.label,
+        location: dialogData.location,
+        options: {
+          useTableName: dialogData.useTableName,
+          convertToPng: dialogData.convertToPng,
+          pngCompressionLevel: dialogData.pngCompressionLevel,
+          renameFolder: dialogData.renameFolder
+        }
+      };
+      
+      if (dialogData.files) {
+        updates.files = Array.from(dialogData.files);
+      }
+      
+      onUpdateItem(editingItem, updates);
+    } else {
+      // Add new item
+      onAddItem(dialogType);
+      // Get the new item and update it with dialog data
+      setTimeout(() => {
+        const newItem = items[items.length - 1];
+        if (newItem) {
+          const updates: Partial<OrganizationItem> = {
+            label: dialogData.label,
+            location: dialogData.location,
+            options: {
+              useTableName: dialogData.useTableName,
+              convertToPng: dialogData.convertToPng,
+              pngCompressionLevel: dialogData.pngCompressionLevel,
+              renameFolder: dialogData.renameFolder
+            }
+          };
+          
+          if (dialogData.files) {
+            updates.files = Array.from(dialogData.files);
+          }
+          
+          onUpdateItem(newItem.id, updates);
+        }
+      }, 0);
+    }
+    
+    setDialogOpen(false);
+  };
+
+  const resetDialog = () => {
+    setDialogOpen(false);
+    setDialogType(null);
+    setEditingItem(null);
+    setDialogData({
+      label: '',
+      location: '',
+      files: null,
+      useTableName: false,
+      convertToPng: false,
+      pngCompressionLevel: 'low',
+      renameFolder: false
+    });
   };
 
   const startEditingLabel = (itemId: string, currentLabel: string) => {
@@ -114,176 +224,39 @@ export default function OrganizationBuilder({
           </div>
         )}
 
-        <div className="space-y-4 mb-6">
+        {/* Compact Item Cards */}
+        <div className="space-y-3 mb-6">
           {items.slice(1).map((item) => (
-            <div key={item.id} className="border border-slate-200 rounded-lg p-4 bg-slate-50">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  {getItemIcon(item.type)}
-                  <div className="flex items-center ml-2">
-                    {editingLabels[item.id] ? (
-                      <div className="flex items-center space-x-2">
-                        <Input
-                          value={editingValues[item.id]}
-                          onChange={(e) => setEditingValues(prev => ({ ...prev, [item.id]: e.target.value }))}
-                          className="text-sm h-7 w-32"
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') saveLabel(item.id);
-                            if (e.key === 'Escape') cancelEditingLabel(item.id);
-                          }}
-                          autoFocus
-                        />
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => saveLabel(item.id)}
-                          className="h-7 w-7 p-0 text-green-600 hover:text-green-700"
-                        >
-                          <Check className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => cancelEditingLabel(item.id)}
-                          className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
-                        >
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <span className="font-medium text-slate-700">
-                          {item.label || getItemTypeName(item.type)}
-                        </span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => startEditingLabel(item.id, item.label || getItemTypeName(item.type))}
-                          className="ml-1 h-6 w-6 p-0 text-slate-400 hover:text-slate-600"
-                        >
-                          <Edit3 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    )}
+            <div key={item.id} className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-colors">
+              <div className="flex items-center space-x-3">
+                {getItemIcon(item.type)}
+                <div>
+                  <div className="font-medium text-slate-700">
+                    {item.label || getItemTypeName(item.type)}
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    {item.location && `${item.location} • `}
+                    {item.files?.length || 0} {item.type === 'folder' ? 'items' : 'files'}
                   </div>
                 </div>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => openEditDialog(item)}
+                  className="h-8 w-8 p-0 text-slate-400 hover:text-slate-600"
+                >
+                  <Edit3 className="h-4 w-4" />
+                </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => onRemoveItem(item.id)}
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                  className="h-8 w-8 p-0 text-red-400 hover:text-red-600"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
-              </div>
-
-              {/* File Location and File Selection */}
-              <div className="grid grid-cols-2 gap-4 mb-3">
-                <div>
-                  <Label htmlFor={`location-${item.id}`} className="text-sm font-medium text-slate-700">
-                    File Location
-                  </Label>
-                  <Input
-                    id={`location-${item.id}`}
-                    value={item.location}
-                    onChange={(e) => onUpdateItem(item.id, { location: e.target.value })}
-                    placeholder="folder/"
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label className="text-sm font-medium text-slate-700 mb-2 block">
-                    {item.type === 'folder' ? 'Folder' : 'Files'} ({item.files?.length || 0} selected)
-                  </Label>
-                  <input
-                    type="file"
-                    multiple={item.type !== 'single'}
-                    {...(item.type === 'folder' ? { webkitdirectory: '' } : {})}
-                    onChange={(e) => handleFileSelect(item.id, e.target.files)}
-                    className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary/90"
-                  />
-                </div>
-              </div>
-
-              {/* Options */}
-              <div className="space-y-2">
-                {item.type === 'single' && (
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`table-name-${item.id}`}
-                      checked={item.options.useTableName || false}
-                      onCheckedChange={(checked) => 
-                        onUpdateItem(item.id, { 
-                          options: { ...item.options, useTableName: checked as boolean }
-                        })
-                      }
-                    />
-                    <Label htmlFor={`table-name-${item.id}`} className="text-sm text-slate-600">
-                      Use table name as filename
-                    </Label>
-                  </div>
-                )}
-
-                {item.files && item.files.some(file => isImageFile(file.name)) && (
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`convert-png-${item.id}`}
-                        checked={item.options.convertToPng || false}
-                        onCheckedChange={(checked) => 
-                          onUpdateItem(item.id, { 
-                            options: { ...item.options, convertToPng: checked as boolean }
-                          })
-                        }
-                      />
-                      <Label htmlFor={`convert-png-${item.id}`} className="text-sm text-slate-600">
-                        Convert images to PNG
-                      </Label>
-                    </div>
-                    
-                    {item.options.convertToPng && (
-                      <div className="ml-6">
-                        <Label className="text-sm text-slate-600 mb-1 block">
-                          Compression Level
-                        </Label>
-                        <Select
-                          value={item.options.pngCompressionLevel || 'low'}
-                          onValueChange={(value: 'none' | 'low' | 'high') =>
-                            onUpdateItem(item.id, {
-                              options: { ...item.options, pngCompressionLevel: value }
-                            })
-                          }
-                        >
-                          <SelectTrigger className="w-32 h-8 text-sm">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="none">None</SelectItem>
-                            <SelectItem value="low">Low</SelectItem>
-                            <SelectItem value="high">High</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {item.type === 'folder' && (
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`rename-folder-${item.id}`}
-                      checked={item.options.renameFolder || false}
-                      onCheckedChange={(checked) => 
-                        onUpdateItem(item.id, { 
-                          options: { ...item.options, renameFolder: checked as boolean }
-                        })
-                      }
-                    />
-                    <Label htmlFor={`rename-folder-${item.id}`} className="text-sm text-slate-600">
-                      Rename folder
-                    </Label>
-                  </div>
-                )}
               </div>
             </div>
           ))}
@@ -304,30 +277,21 @@ export default function OrganizationBuilder({
             <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg z-10">
               <button
                 className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors border-b border-slate-100 flex items-center"
-                onClick={() => {
-                  onAddItem('single');
-                  setDropdownOpen(false);
-                }}
+                onClick={() => openAddDialog('single')}
               >
                 <File className="text-blue-600 mr-3 h-4 w-4" />
                 <span className="font-medium">Single File</span>
               </button>
               <button
                 className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors border-b border-slate-100 flex items-center"
-                onClick={() => {
-                  onAddItem('multiple');
-                  setDropdownOpen(false);
-                }}
+                onClick={() => openAddDialog('multiple')}
               >
                 <Files className="text-green-600 mr-3 h-4 w-4" />
                 <span className="font-medium">Multiple Files</span>
               </button>
               <button
                 className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors flex items-center"
-                onClick={() => {
-                  onAddItem('folder');
-                  setDropdownOpen(false);
-                }}
+                onClick={() => openAddDialog('folder')}
               >
                 <Folder className="text-yellow-600 mr-3 h-4 w-4" />
                 <span className="font-medium">Folder</span>
@@ -335,6 +299,137 @@ export default function OrganizationBuilder({
             </div>
           )}
         </div>
+
+        {/* Add/Edit Item Dialog */}
+        <Dialog open={dialogOpen} onOpenChange={resetDialog}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>
+                {editingItem ? 'Edit' : 'Add'} {dialogType && getItemTypeName(dialogType)}
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              {/* Label */}
+              <div>
+                <Label htmlFor="dialog-label">Label</Label>
+                <Input
+                  id="dialog-label"
+                  value={dialogData.label}
+                  onChange={(e) => setDialogData(prev => ({ ...prev, label: e.target.value }))}
+                  placeholder={dialogType ? getItemTypeName(dialogType) : ''}
+                />
+              </div>
+
+              {/* Location */}
+              <div>
+                <Label htmlFor="dialog-location">File Location</Label>
+                <Input
+                  id="dialog-location"
+                  value={dialogData.location}
+                  onChange={(e) => setDialogData(prev => ({ ...prev, location: e.target.value }))}
+                  placeholder="folder/"
+                />
+              </div>
+
+              {/* File Selection */}
+              <div>
+                <Label htmlFor="dialog-files">
+                  {dialogType === 'folder' ? 'Select Folder' : 'Select Files'}
+                </Label>
+                <input
+                  id="dialog-files"
+                  type="file"
+                  multiple={dialogType !== 'single'}
+                  {...(dialogType === 'folder' ? { webkitdirectory: '' } : {})}
+                  onChange={(e) => setDialogData(prev => ({ ...prev, files: e.target.files }))}
+                  className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary/90"
+                />
+                {dialogData.files && (
+                  <p className="text-sm text-slate-600 mt-1">
+                    {dialogData.files.length} {dialogType === 'folder' ? 'items' : 'files'} selected
+                  </p>
+                )}
+              </div>
+
+              {/* Options */}
+              <div className="space-y-3">
+                {dialogType === 'single' && (
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="dialog-table-name"
+                      checked={dialogData.useTableName}
+                      onCheckedChange={(checked) => 
+                        setDialogData(prev => ({ ...prev, useTableName: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="dialog-table-name">Use table name as filename</Label>
+                  </div>
+                )}
+
+                {dialogData.files && Array.from(dialogData.files).some(file => isImageFile(file.name)) && (
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="dialog-convert-png"
+                        checked={dialogData.convertToPng}
+                        onCheckedChange={(checked) => 
+                          setDialogData(prev => ({ ...prev, convertToPng: checked as boolean }))
+                        }
+                      />
+                      <Label htmlFor="dialog-convert-png">Convert images to PNG</Label>
+                    </div>
+                    
+                    {dialogData.convertToPng && (
+                      <div className="ml-6">
+                        <Label className="text-sm text-slate-600 mb-1 block">
+                          Compression Level
+                        </Label>
+                        <Select
+                          value={dialogData.pngCompressionLevel}
+                          onValueChange={(value: 'none' | 'low' | 'high') =>
+                            setDialogData(prev => ({ ...prev, pngCompressionLevel: value }))
+                          }
+                        >
+                          <SelectTrigger className="w-32">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">None</SelectItem>
+                            <SelectItem value="low">Low</SelectItem>
+                            <SelectItem value="high">High</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {dialogType === 'folder' && (
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="dialog-rename-folder"
+                      checked={dialogData.renameFolder}
+                      onCheckedChange={(checked) => 
+                        setDialogData(prev => ({ ...prev, renameFolder: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="dialog-rename-folder">Rename folder</Label>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button variant="outline" onClick={resetDialog}>
+                Cancel
+              </Button>
+              <Button onClick={handleDialogSave}>
+                {editingItem ? 'Update' : 'Add'} Item
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   );
