@@ -118,29 +118,45 @@ export function generateFileTree(items: OrganizationItem[], tableName: string): 
       }
     }
 
-    // Add files
-    const targetFolder = folderMap.get(item.location.replace(/\/$/, '')) || root;
-    
-    for (const file of item.files) {
-      let fileName = file.name;
+    // Handle folder items differently - show as single collapsed folder
+    if (item.type === 'folder') {
+      const targetFolder = folderMap.get(item.location.replace(/\/$/, '')) || root;
       
-      if (item.options.useTableName) {
-        const extension = file.name.split('.').pop();
-        fileName = `${tableName}.${extension}`;
-      }
-      
-      if (item.options.convertToPng && file.type.startsWith('image/')) {
-        fileName = getFileNameWithoutExtension(fileName) + '.png';
-      }
-
-      const fileNode: FileTreeNode = {
-        name: fileName,
-        type: 'file',
-        path: item.location ? `${item.location}${fileName}` : fileName,
-        size: file.size
+      // Add a single folder node representing the uploaded folder
+      const folderName = item.label || `Folder (${item.files.length} files)`;
+      const folderNode: FileTreeNode = {
+        name: folderName,
+        type: 'folder',
+        path: item.location ? `${item.location}${folderName}` : folderName,
+        children: [] // Empty children to show as collapsed
       };
 
-      targetFolder.children!.push(fileNode);
+      targetFolder.children!.push(folderNode);
+    } else {
+      // Add individual files for single/multiple file items
+      const targetFolder = folderMap.get(item.location.replace(/\/$/, '')) || root;
+      
+      for (const file of item.files) {
+        let fileName = file.name;
+        
+        if (item.options.useTableName) {
+          const extension = file.name.split('.').pop();
+          fileName = `${tableName}.${extension}`;
+        }
+        
+        if (item.options.convertToPng && file.type.startsWith('image/')) {
+          fileName = getFileNameWithoutExtension(fileName) + '.png';
+        }
+
+        const fileNode: FileTreeNode = {
+          name: fileName,
+          type: 'file',
+          path: item.location ? `${item.location}${fileName}` : fileName,
+          size: file.size
+        };
+
+        targetFolder.children!.push(fileNode);
+      }
     }
   }
 
