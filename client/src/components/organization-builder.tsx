@@ -114,7 +114,7 @@ export default function OrganizationBuilder({
         )}
 
         <div className="space-y-4 mb-6">
-          {items.map((item) => (
+          {items.slice(1).map((item) => (
             <div key={item.id} className="border border-slate-200 rounded-lg p-4 bg-slate-50">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
@@ -176,21 +176,19 @@ export default function OrganizationBuilder({
                 </Button>
               </div>
 
-              {/* Show file location field only for non-first items */}
-              {items.indexOf(item) !== 0 && (
-                <div className="mb-3">
-                  <Label htmlFor={`location-${item.id}`} className="text-sm font-medium text-slate-700">
-                    File Location
-                  </Label>
-                  <Input
-                    id={`location-${item.id}`}
-                    value={item.location}
-                    onChange={(e) => onUpdateItem(item.id, { location: e.target.value })}
-                    placeholder="folder/"
-                    className="mt-1"
-                  />
-                </div>
-              )}
+              {/* Show file location field for all items since first item is excluded */}
+              <div className="mb-3">
+                <Label htmlFor={`location-${item.id}`} className="text-sm font-medium text-slate-700">
+                  File Location
+                </Label>
+                <Input
+                  id={`location-${item.id}`}
+                  value={item.location}
+                  onChange={(e) => onUpdateItem(item.id, { location: e.target.value })}
+                  placeholder="folder/"
+                  className="mt-1"
+                />
+              </div>
 
               {/* File Selection */}
               <div className="mb-3">
