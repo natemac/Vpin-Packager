@@ -103,19 +103,20 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
           {/* Template Management */}
           <div>
             <h3 className="text-sm font-medium text-slate-700 mb-2">Template Management</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-2">
               <Button 
                 variant="outline" 
                 onClick={handleLoadTemplate}
-                className="h-10 text-sm"
+                className="w-full h-10 text-sm"
               >
                 <Download className="mr-2 h-4 w-4" />
                 Load Template
               </Button>
               
               <Button 
+                variant="outline"
                 onClick={handleSaveTemplate}
-                className="h-10 text-sm"
+                className="w-full h-10 text-sm"
               >
                 <Save className="mr-2 h-4 w-4" />
                 Save Template
