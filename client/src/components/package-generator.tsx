@@ -3,6 +3,8 @@ import { Download, Archive } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { OrganizationItem } from '@/types/organization';
 import { generateZipFromOrganization, calculatePackageSummary } from '@/lib/zip-generator';
 import { formatFileSize, downloadBlob } from '@/lib/file-utils';
@@ -16,6 +18,7 @@ interface PackageGeneratorProps {
 export default function PackageGenerator({ items, tableName }: PackageGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [includeTable, setIncludeTable] = useState(true);
   const { toast } = useToast();
 
   const summary = calculatePackageSummary(items);
@@ -36,8 +39,11 @@ export default function PackageGenerator({ items, tableName }: PackageGeneratorP
     setProgress(0);
 
     try {
+      // Filter items based on includeTable setting
+      const itemsToInclude = includeTable ? items : items.slice(1);
+      
       const zipBlob = await generateZipFromOrganization(
-        items,
+        itemsToInclude,
         tableName,
         (progressPercent) => setProgress(progressPercent)
       );
@@ -91,6 +97,20 @@ export default function PackageGenerator({ items, tableName }: PackageGeneratorP
               <span className="text-slate-500">Format:</span>
               <span className="font-semibold text-slate-900 ml-2">ZIP</span>
             </div>
+          </div>
+        </div>
+
+        {/* Package Options */}
+        <div className="mb-4">
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="include-table"
+              checked={includeTable}
+              onCheckedChange={(checked) => setIncludeTable(checked as boolean)}
+            />
+            <Label htmlFor="include-table" className="text-sm font-medium">
+              Include Table in Package
+            </Label>
           </div>
         </div>
 
