@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { OrganizationItem } from '@/types/organization';
 import { isImageFile } from '@/lib/file-utils';
 
@@ -224,19 +225,46 @@ export default function OrganizationBuilder({
                 )}
 
                 {item.files && item.files.some(file => isImageFile(file.name)) && (
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`convert-png-${item.id}`}
-                      checked={item.options.convertToPng || false}
-                      onCheckedChange={(checked) => 
-                        onUpdateItem(item.id, { 
-                          options: { ...item.options, convertToPng: checked as boolean }
-                        })
-                      }
-                    />
-                    <Label htmlFor={`convert-png-${item.id}`} className="text-sm text-slate-600">
-                      Convert images to PNG
-                    </Label>
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`convert-png-${item.id}`}
+                        checked={item.options.convertToPng || false}
+                        onCheckedChange={(checked) => 
+                          onUpdateItem(item.id, { 
+                            options: { ...item.options, convertToPng: checked as boolean }
+                          })
+                        }
+                      />
+                      <Label htmlFor={`convert-png-${item.id}`} className="text-sm text-slate-600">
+                        Convert images to PNG
+                      </Label>
+                    </div>
+                    
+                    {item.options.convertToPng && (
+                      <div className="ml-6">
+                        <Label className="text-sm text-slate-600 mb-1 block">
+                          Compression Level
+                        </Label>
+                        <Select
+                          value={item.options.pngCompressionLevel || 'low'}
+                          onValueChange={(value: 'none' | 'low' | 'high') =>
+                            onUpdateItem(item.id, {
+                              options: { ...item.options, pngCompressionLevel: value }
+                            })
+                          }
+                        >
+                          <SelectTrigger className="w-32 h-8 text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">None</SelectItem>
+                            <SelectItem value="low">Low</SelectItem>
+                            <SelectItem value="high">High</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                   </div>
                 )}
 

@@ -32,7 +32,7 @@ export function isVpxFile(fileName: string): boolean {
   return vpxExtensions.includes(extension);
 }
 
-export async function convertImageToPng(file: File): Promise<File> {
+export async function convertImageToPng(file: File, compressionLevel: 'none' | 'low' | 'high' = 'low'): Promise<File> {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -44,6 +44,21 @@ export async function convertImageToPng(file: File): Promise<File> {
       
       if (ctx) {
         ctx.drawImage(img, 0, 0);
+        
+        // Determine quality based on compression level
+        let quality = 0.9; // Default for 'low'
+        switch (compressionLevel) {
+          case 'none':
+            quality = 1.0;
+            break;
+          case 'low':
+            quality = 0.9;
+            break;
+          case 'high':
+            quality = 0.6;
+            break;
+        }
+        
         canvas.toBlob((blob) => {
           if (blob) {
             const newFileName = getFileNameWithoutExtension(file.name) + '.png';
@@ -52,7 +67,7 @@ export async function convertImageToPng(file: File): Promise<File> {
           } else {
             reject(new Error('Failed to convert image'));
           }
-        }, 'image/png');
+        }, 'image/png', quality);
       } else {
         reject(new Error('Canvas context not available'));
       }

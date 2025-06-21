@@ -45,7 +45,8 @@ export async function generateZipFromOrganization(
 
       if (item.options.convertToPng && file.type.startsWith('image/')) {
         try {
-          processedFile = await convertImageToPng(file);
+          const compressionLevel = item.options.pngCompressionLevel || 'low';
+          processedFile = await convertImageToPng(file, compressionLevel);
           if (item.options.useTableName) {
             fileName = `${tableName}.png`;
           } else {

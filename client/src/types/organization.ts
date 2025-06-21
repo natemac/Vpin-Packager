@@ -6,6 +6,7 @@ export interface OrganizationItem {
   options: {
     useTableName?: boolean;
     convertToPng?: boolean;
+    pngCompressionLevel?: 'none' | 'low' | 'high';
     renameFolder?: boolean;
   };
   files?: File[];
