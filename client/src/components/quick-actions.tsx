@@ -107,7 +107,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
               <Button 
                 variant="outline" 
                 onClick={handleLoadTemplate}
-                className="w-full h-10 text-sm"
+                className="w-full h-10 text-sm text-left"
               >
                 <Download className="mr-2 h-4 w-4" />
                 Load Template
