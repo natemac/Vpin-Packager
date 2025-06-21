@@ -19,21 +19,11 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    
-    if (!isVpxFile(file.name)) {
-      toast({
-        title: "Invalid file type",
-        description: "Please select a valid table file (.vpx, .vpt, .fp)",
-        variant: "destructive"
-      });
-      return;
-    }
-
     const name = getFileNameWithoutExtension(file.name);
     onFileSelect(file, name);
     
     toast({
-      title: "Table file loaded",
+      title: "File loaded",
       description: `${name} has been loaded successfully`
     });
   }, [onFileSelect, toast]);
@@ -67,7 +57,7 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
       <CardHeader>
         <CardTitle className="flex items-center">
           <CloudUpload className="text-primary mr-2 h-5 w-5" />
-          Table File Upload
+          File Upload
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -84,20 +74,15 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
         >
           <CloudUpload className="mx-auto h-12 w-12 text-slate-400 mb-4" />
           <p className="text-lg font-medium text-slate-700 mb-2">
-            Drag & drop your table file here
+            Drag & drop your file here
           </p>
-          <p className="text-sm text-slate-500 mb-4">
+          <p className="text-sm text-slate-500">
             or click to browse files
           </p>
-          <Button>
-            <FolderOpen className="mr-2 h-4 w-4" />
-            Browse Files
-          </Button>
           <input
             ref={fileInputRef}
             type="file"
             className="hidden"
-            accept=".vpx,.vpt,.fp"
             onChange={handleInputChange}
           />
         </div>
@@ -107,7 +92,7 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
             <div className="flex items-center">
               <FileText className="text-green-600 mr-3 h-5 w-5" />
               <div>
-                <p className="font-medium text-green-900">Table loaded:</p>
+                <p className="font-medium text-green-900">File loaded:</p>
                 <p className="text-green-700">{tableName}</p>
               </div>
             </div>
