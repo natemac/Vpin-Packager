@@ -130,7 +130,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
             <div className="space-y-2">
               <Button
                 variant="outline"
-                className="w-full justify-start h-auto p-3"
+                className="w-full h-auto p-3 text-left"
                 onClick={() => handleLoadBuiltinTemplate('pinballEmporium')}
               >
                 <Gamepad className="text-blue-600 mr-2 h-4 w-4" />
@@ -139,7 +139,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
               
               <Button
                 variant="outline"
-                className="w-full justify-start h-auto p-3"
+                className="w-full h-auto p-3 text-left"
                 onClick={() => handleLoadBuiltinTemplate('pinupPopper')}
               >
                 <Monitor className="text-green-600 mr-2 h-4 w-4" />
