@@ -176,32 +176,32 @@ export default function OrganizationBuilder({
                 </Button>
               </div>
 
-              {/* Show file location field for all items since first item is excluded */}
-              <div className="mb-3">
-                <Label htmlFor={`location-${item.id}`} className="text-sm font-medium text-slate-700">
-                  File Location
-                </Label>
-                <Input
-                  id={`location-${item.id}`}
-                  value={item.location}
-                  onChange={(e) => onUpdateItem(item.id, { location: e.target.value })}
-                  placeholder="folder/"
-                  className="mt-1"
-                />
-              </div>
-
-              {/* File Selection */}
-              <div className="mb-3">
-                <Label className="text-sm font-medium text-slate-700 mb-2 block">
-                  {item.type === 'folder' ? 'Folder' : 'Files'} ({item.files?.length || 0} selected)
-                </Label>
-                <input
-                  type="file"
-                  multiple={item.type !== 'single'}
-                  {...(item.type === 'folder' ? { webkitdirectory: '' } : {})}
-                  onChange={(e) => handleFileSelect(item.id, e.target.files)}
-                  className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary/90"
-                />
+              {/* File Location and File Selection */}
+              <div className="grid grid-cols-2 gap-4 mb-3">
+                <div>
+                  <Label htmlFor={`location-${item.id}`} className="text-sm font-medium text-slate-700">
+                    File Location
+                  </Label>
+                  <Input
+                    id={`location-${item.id}`}
+                    value={item.location}
+                    onChange={(e) => onUpdateItem(item.id, { location: e.target.value })}
+                    placeholder="folder/"
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-slate-700 mb-2 block">
+                    {item.type === 'folder' ? 'Folder' : 'Files'} ({item.files?.length || 0} selected)
+                  </Label>
+                  <input
+                    type="file"
+                    multiple={item.type !== 'single'}
+                    {...(item.type === 'folder' ? { webkitdirectory: '' } : {})}
+                    onChange={(e) => handleFileSelect(item.id, e.target.files)}
+                    className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary/90"
+                  />
+                </div>
               </div>
 
               {/* Options */}
