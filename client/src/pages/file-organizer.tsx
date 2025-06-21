@@ -32,7 +32,6 @@ export default function FileOrganizer() {
                 organization.setTableFile(file);
                 organization.setTableName(name);
               }}
-              onTableNameChange={organization.setTableName}
               tableName={organization.tableName}
             />
             
