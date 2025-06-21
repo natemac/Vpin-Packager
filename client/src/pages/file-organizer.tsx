@@ -1,7 +1,6 @@
 import { FolderOpen } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
 import FileUploadZone from "@/components/file-upload-zone";
-import TemplateManager from "@/components/template-manager";
 import OrganizationBuilder from "@/components/organization-builder";
 import FileTreePreview from "@/components/file-tree-preview";
 import PackageGenerator from "@/components/package-generator";
@@ -36,11 +35,6 @@ export default function FileOrganizer() {
               tableName={organization.tableName}
             />
             
-            <TemplateManager 
-              onLoadTemplate={organization.loadTemplate}
-              onSaveTemplate={organization.exportTemplate}
-            />
-            
             <OrganizationBuilder 
               items={organization.items}
               onAddItem={organization.addItem}
@@ -63,6 +57,7 @@ export default function FileOrganizer() {
             
             <QuickActions 
               onLoadTemplate={organization.loadTemplate}
+              onSaveTemplate={organization.exportTemplate}
               onClearInterface={organization.clearAll}
             />
           </div>
