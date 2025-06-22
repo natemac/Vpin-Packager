@@ -171,7 +171,7 @@ export default function PresetItemsDialog({
                           <div className="flex items-start space-x-3">
                             <Checkbox
                               checked={isSelected}
-                              onChange={() => handleItemToggle(item.id)}
+                              onCheckedChange={() => handleItemToggle(item.id)}
                               className="mt-1"
                             />
                             <div className="flex items-center space-x-2">

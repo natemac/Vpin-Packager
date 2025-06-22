@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FolderOpen } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
+import { OrganizationItem } from "@/types/organization";
 import FileUploadZone from "@/components/file-upload-zone";
 import OrganizationBuilder from "@/components/organization-builder";
 import FileTreePreview from "@/components/file-tree-preview";
@@ -25,7 +26,7 @@ export default function FileOrganizer() {
     setShowPresetDialog(true);
   };
 
-  const handleAddPresetItems = (presetItems: any[]) => {
+  const handleAddPresetItems = (presetItems: OrganizationItem[]) => {
     organization.addMultipleItems(presetItems);
     setPendingTableFile(null);
   };
@@ -91,6 +92,14 @@ export default function FileOrganizer() {
           </div>
         </div>
       </main>
+
+      {/* Preset Items Dialog */}
+      <PresetItemsDialog
+        open={showPresetDialog}
+        onOpenChange={setShowPresetDialog}
+        tableName={pendingTableFile?.name || ''}
+        onAddPresetItems={handleAddPresetItems}
+      />
 
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 mt-12 py-6">
