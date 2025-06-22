@@ -31,6 +31,10 @@ export function useOrganization() {
     setItems([firstItem]);
   }, []);
 
+  const addMultipleItems = useCallback((newItems: OrganizationItem[]) => {
+    setItems(prev => [...prev, ...newItems]);
+  }, []);
+
   const updateItem = useCallback((id: string, updates: Partial<OrganizationItem>) => {
     setItems(prev => prev.map(item => 
       item.id === id ? { ...item, ...updates } : item
@@ -76,6 +80,7 @@ export function useOrganization() {
     setTableFile,
     addItem,
     addFirstItem,
+    addMultipleItems,
     updateItem,
     removeItem,
     loadTemplate,

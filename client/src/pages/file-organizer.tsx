@@ -6,10 +6,34 @@ import OrganizationBuilder from "@/components/organization-builder";
 import FileTreePreview from "@/components/file-tree-preview";
 import PackageGenerator from "@/components/package-generator";
 import QuickActions from "@/components/quick-actions";
+import PresetItemsDialog from "@/components/preset-items-dialog";
 
 export default function FileOrganizer() {
   const organization = useOrganization();
   const [includeTable, setIncludeTable] = useState(true);
+  const [showPresetDialog, setShowPresetDialog] = useState(false);
+  const [pendingTableFile, setPendingTableFile] = useState<{file: File, name: string} | null>(null);
+
+  const handleFileSelect = (file: File, name: string) => {
+    // Set up the table file and name
+    organization.setTableFile(file);
+    organization.setTableName(name);
+    organization.addFirstItem(file);
+    
+    // Store the file info and show preset dialog
+    setPendingTableFile({ file, name });
+    setShowPresetDialog(true);
+  };
+
+  const handleAddPresetItems = (presetItems: any[]) => {
+    organization.addMultipleItems(presetItems);
+    setPendingTableFile(null);
+  };
+
+  const handlePresetDialogClose = () => {
+    setShowPresetDialog(false);
+    setPendingTableFile(null);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -30,11 +54,7 @@ export default function FileOrganizer() {
           {/* Left Column (2/3) */}
           <div className="col-span-8 space-y-6">
             <FileUploadZone 
-              onFileSelect={(file, name) => {
-                organization.setTableFile(file);
-                organization.setTableName(name);
-                organization.addFirstItem(file);
-              }}
+              onFileSelect={handleFileSelect}
               tableName={organization.tableName}
             />
             
