@@ -27,7 +27,9 @@ export default function PackageGenerator({
   const [progress, setProgress] = useState(0);
   const { toast } = useToast();
 
-  const summary = calculatePackageSummary(items);
+  // Calculate summary based on includeTable setting
+  const itemsToSummarize = includeTable ? items : items.slice(1);
+  const summary = calculatePackageSummary(itemsToSummarize);
   const hasFiles = items.some(item => item.files && item.files.length > 0);
   const canGenerate = tableName && hasFiles;
 
