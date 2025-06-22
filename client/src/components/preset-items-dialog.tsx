@@ -214,9 +214,8 @@ export default function PresetItemsDialog({
             </Button>
             <Button 
               onClick={handleAddItems}
-              disabled={selectedItems.size === 0}
             >
-              Add Selected Items
+              Continue
             </Button>
           </div>
         </div>
