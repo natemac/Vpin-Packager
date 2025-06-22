@@ -103,14 +103,8 @@ export default function PresetItemsDialog({
   };
 
   const getTypeBadge = (type: PresetItem['type']) => {
-    const variants = {
-      single: 'default',
-      multiple: 'secondary',
-      folder: 'outline'
-    } as const;
-    
     return (
-      <Badge variant={variants[type]} className="text-xs">
+      <Badge variant="outline" className="text-xs bg-white">
         {type}
       </Badge>
     );
