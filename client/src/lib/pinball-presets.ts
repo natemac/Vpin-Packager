@@ -20,7 +20,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-directb2s",
         label: "directb2s",
         type: "single",
-        defaultLocation: "Tables/",
+        defaultLocation: "emulators/Visual Pinball/Tables/",
         useTableName: true,
         category: "Visual Pinball X"
       },
@@ -28,7 +28,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-rom",
         label: "vPinMAME ROM",
         type: "single",
-        defaultLocation: "VPinMAME/roms/",
+        defaultLocation: "emulators/Visual Pinball/VPinMAME/roms/",
         useTableName: false,
         category: "Visual Pinball X"
       },
@@ -36,7 +36,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-dmd-altcolor",
         label: "DMD Alt Color",
         type: "folder",
-        defaultLocation: "VPinMAME/altcolor/",
+        defaultLocation: "emulators/Visual Pinball/VPinMAME/altcolor/",
         useTableName: false,
         category: "Visual Pinball X"
       },
@@ -44,7 +44,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-puppack",
         label: "PupPack",
         type: "folder",
-        defaultLocation: "PinUPSystem/PUPVideos/",
+        defaultLocation: "emulators/PinUPSystem/PUPVideos/",
         useTableName: false,
         category: "Visual Pinball X"
       }
@@ -57,7 +57,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "fp-library-files",
         label: "Library Files",
         type: "multiple",
-        defaultLocation: "Libraries/",
+        defaultLocation: "emulators/Future Pinball/Libraries/",
         useTableName: false,
         category: "Future Pinball"
       },
@@ -65,7 +65,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "fp-pinevent-puppack",
         label: "PinEvent PupPack",
         type: "folder",
-        defaultLocation: "PinUPSystem/PUPVideos/",
+        defaultLocation: "emulators/PinUPSystem/PUPVideos/",
         useTableName: false,
         category: "Future Pinball"
       },
@@ -73,7 +73,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "fp-cfg-pov",
         label: "CFG for POV",
         type: "single",
-        defaultLocation: "Config/",
+        defaultLocation: "emulators/Future Pinball/BAM/cfg/",
         useTableName: true,
         category: "Future Pinball"
       }
@@ -86,7 +86,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-cover",
         label: "Cover",
         type: "single",
-        defaultLocation: "media/covers/",
+        defaultLocation: "collections/(EMULATOR)/medium_artwork/covers/",
         useTableName: true,
         category: "Pinball Emporium"
       },
@@ -94,7 +94,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-topper",
         label: "Topper",
         type: "single",
-        defaultLocation: "media/toppers/",
+        defaultLocation: "collections/(EMULATOR)/medium_artwork/topper/",
         useTableName: true,
         category: "Pinball Emporium"
       },
@@ -102,7 +102,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-marquee",
         label: "Marquee",
         type: "single",
-        defaultLocation: "media/marquees/",
+        defaultLocation: "collections/(EMULATOR)/medium_artwork/video_marquees/",
         useTableName: true,
         category: "Pinball Emporium"
       },
@@ -110,7 +110,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-table",
         label: "Table",
         type: "single",
-        defaultLocation: "tables/",
+        defaultLocation: "collections/(EMULATOR)/medium_artwork/video/",
         useTableName: true,
         category: "Pinball Emporium"
       },
@@ -118,7 +118,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-logo",
         label: "Logo",
         type: "single",
-        defaultLocation: "media/logos/",
+        defaultLocation: "collections/(EMULATOR)/medium_artwork/logo/",
         useTableName: true,
         category: "Pinball Emporium"
       },
@@ -126,7 +126,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-credit",
         label: "Credit",
         type: "single",
-        defaultLocation: "media/credits/",
+        defaultLocation: "collections/(EMULATOR)/medium_artwork/credit/",
         useTableName: true,
         category: "Pinball Emporium"
       },
@@ -134,7 +134,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-rules",
         label: "Rules",
         type: "single",
-        defaultLocation: "media/rules/",
+        defaultLocation: "collections/(EMULATOR)/medium_artwork/rules",
         useTableName: true,
         category: "Pinball Emporium"
       }
