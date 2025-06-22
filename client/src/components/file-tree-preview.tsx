@@ -7,6 +7,7 @@ import { isImageFile } from '@/lib/file-utils';
 interface FileTreePreviewProps {
   items: OrganizationItem[];
   tableName: string;
+  includeTable?: boolean;
 }
 
 function TreeNode({ node, depth = 0 }: { node: FileTreeNode; depth?: number }) {
@@ -47,8 +48,10 @@ function TreeNode({ node, depth = 0 }: { node: FileTreeNode; depth?: number }) {
   );
 }
 
-export default function FileTreePreview({ items, tableName }: FileTreePreviewProps) {
-  const fileTree = tableName ? generateFileTree(items, tableName) : null;
+export default function FileTreePreview({ items, tableName, includeTable = true }: FileTreePreviewProps) {
+  // Filter items based on includeTable setting
+  const itemsToPreview = includeTable ? items : items.slice(1);
+  const fileTree = tableName ? generateFileTree(itemsToPreview, tableName) : null;
   
   const stats = fileTree ? {
     files: countFiles(fileTree),

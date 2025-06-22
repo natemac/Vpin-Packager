@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FolderOpen } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
 import FileUploadZone from "@/components/file-upload-zone";
@@ -8,6 +9,7 @@ import QuickActions from "@/components/quick-actions";
 
 export default function FileOrganizer() {
   const organization = useOrganization();
+  const [includeTable, setIncludeTable] = useState(true);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -51,6 +53,8 @@ export default function FileOrganizer() {
             <PackageGenerator 
               items={organization.items}
               tableName={organization.tableName}
+              includeTable={includeTable}
+              onIncludeTableChange={setIncludeTable}
             />
             
             <QuickActions 
@@ -62,6 +66,7 @@ export default function FileOrganizer() {
             <FileTreePreview 
               items={organization.items}
               tableName={organization.tableName}
+              includeTable={includeTable}
             />
           </div>
         </div>

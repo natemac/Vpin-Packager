@@ -13,12 +13,18 @@ import { useToast } from '@/hooks/use-toast';
 interface PackageGeneratorProps {
   items: OrganizationItem[];
   tableName: string;
+  includeTable?: boolean;
+  onIncludeTableChange?: (include: boolean) => void;
 }
 
-export default function PackageGenerator({ items, tableName }: PackageGeneratorProps) {
+export default function PackageGenerator({ 
+  items, 
+  tableName, 
+  includeTable = true, 
+  onIncludeTableChange 
+}: PackageGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [includeTable, setIncludeTable] = useState(true);
   const { toast } = useToast();
 
   const summary = calculatePackageSummary(items);
@@ -106,7 +112,7 @@ export default function PackageGenerator({ items, tableName }: PackageGeneratorP
             <Checkbox
               id="include-table"
               checked={includeTable}
-              onCheckedChange={(checked) => setIncludeTable(checked as boolean)}
+              onCheckedChange={(checked) => onIncludeTableChange?.(checked as boolean)}
             />
             <Label htmlFor="include-table" className="text-sm font-medium">
               Include Table in Package
