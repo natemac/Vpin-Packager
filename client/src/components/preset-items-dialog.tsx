@@ -124,9 +124,7 @@ export default function PresetItemsDialog({
             <Package className="mr-2 h-5 w-5 text-primary" />
             Add Preset Items for "{tableName}"
           </DialogTitle>
-          <DialogDescription>
-            Select the items you'd like to add to your file organization. These are pre-configured with common locations and settings.
-          </DialogDescription>
+          <DialogDescription>(Optional) Add Pre-configured Items below.</DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto space-y-6">
