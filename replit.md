@@ -15,17 +15,17 @@ This is a client-side file organization and packaging tool specifically designed
 - **File Processing**: Client-side file handling with JSZip for package generation
 
 ### Backend Architecture
-- **Server**: Express.js with TypeScript
+- **Server**: Express.js with TypeScript (minimal - serves static files only)
 - **Development**: Hot module replacement via Vite middleware
-- **Storage Interface**: Abstracted storage layer with in-memory implementation
-- **Database**: Drizzle ORM configured for PostgreSQL (schema defined but not actively used)
-- **Sessions**: Express sessions with PostgreSQL store support
+- **Storage**: No backend storage - application runs entirely client-side
+- **Database**: Removed - no database dependencies
+- **Authentication**: Removed - no user management needed
 
 ### Key Components
 
 #### File Processing System
 - **Client-side Processing**: All file operations happen in the browser
-- **Template System**: JSON-based organization templates with preset configurations
+- **Template System**: Embedded organization templates with preset configurations (no server dependencies)
 - **ZIP Generation**: Dynamic package creation with progress tracking
 - **Image Conversion**: PNG conversion with compression options for media files
 
@@ -79,12 +79,15 @@ This is a client-side file organization and packaging tool specifically designed
 - **Database**: PostgreSQL with connection pooling via Neon
 
 ### Platform Configuration
-- **Replit Modules**: Node.js 20, web server, and PostgreSQL 16
-- **Environment Variables**: Database URL configuration
-- **Build Commands**: Separate build and start scripts for deployment
+- **Replit Modules**: Node.js 20 and web server (PostgreSQL removed)
+- **Environment Variables**: None required for core functionality
+- **Build Commands**: Static build for client-side deployment
+- **GitHub Pages Ready**: Can be deployed as static site with minimal changes
 
 ## Changelog
-- June 23, 2025. Initial setup
+- June 23, 2025: Initial setup
+- June 23, 2025: Removed authentication system and database dependencies
+- June 23, 2025: Converted to embedded templates for static deployment compatibility
 
 ## User Preferences
 
