@@ -65,7 +65,7 @@ export default function PresetItemsDialog({
     const categoryItemIds = category.items.map(item => item.id);
     const newSelection = new Set(selectedItems);
     const allSelected = categoryItemIds.every(id => newSelection.has(id));
-    
+
     if (allSelected) {
       // Deselect all items in this category
       categoryItemIds.forEach(id => newSelection.delete(id));
@@ -90,17 +90,17 @@ export default function PresetItemsDialog({
     }
 
     const itemsToAdd: OrganizationItem[] = [];
-    
+
     selectedItems.forEach(itemId => {
       const category = PINBALL_PRESETS.find(cat => 
         cat.items.some(item => item.id === itemId)
       );
       const presetItem = category?.items.find(item => item.id === itemId);
-      
+
       if (presetItem && category) {
         const parentPath = parentPaths[category.name] || category.parentPath;
         const fullLocation = parentPath + presetItem.defaultLocation;
-        
+
         const organizationItem: OrganizationItem = {
           id: nanoid(),
           type: presetItem.type,
@@ -171,7 +171,7 @@ export default function PresetItemsDialog({
               placeholder="emulators/Visual Pinball/Tables/"
               className="font-mono text-sm"
             />
-            
+
           </div>
         </div>
 
@@ -197,7 +197,7 @@ export default function PresetItemsDialog({
                       {someSelected && !allSelected && ` (${selectedInCategory})`}
                     </Button>
                   </div>
-                  
+
                   {/* Editable Parent Path */}
                   <div className="flex items-center space-x-2">
                     {editingPath === category.name ? (
@@ -236,7 +236,7 @@ export default function PresetItemsDialog({
                 <div className="grid grid-cols-2 gap-3">
                   {category.items.map((item) => {
                     const isSelected = selectedItems.has(item.id);
-                    
+
                     return (
                       <div
                         key={item.id}
