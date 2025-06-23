@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PINBALL_PRESETS, PresetItem, PresetCategory } from "@/lib/pinball-presets";
+import { PINBALL_PRESETS, PresetItem, PresetCategory, DEFAULT_TABLE_LOCATION } from "@/lib/pinball-presets";
 import { OrganizationItem } from "@/types/organization";
 import { nanoid } from "nanoid";
 
@@ -31,7 +31,7 @@ export default function PresetItemsDialog({
   onOpenChange,
   tableName,
   onAddPresetItems,
-  tableLocation = "emulators/Visual Pinball/Tables/",
+  tableLocation = DEFAULT_TABLE_LOCATION,
   onTableLocationChange
 }: PresetItemsDialogProps) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
@@ -168,7 +168,7 @@ export default function PresetItemsDialog({
               id="table-location"
               value={currentTableLocation}
               onChange={(e) => setCurrentTableLocation(e.target.value)}
-              placeholder="emulators/Visual Pinball/Tables/"
+              placeholder={DEFAULT_TABLE_LOCATION}
               className="font-mono text-sm"
             />
 

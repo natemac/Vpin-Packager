@@ -13,6 +13,8 @@ export interface PresetCategory {
   items: PresetItem[];
 }
 
+export const DEFAULT_TABLE_LOCATION = "emulators/Visual Pinball/Tables/";
+
 export const PINBALL_PRESETS: PresetCategory[] = [
   {
     name: "Visual Pinball X",
