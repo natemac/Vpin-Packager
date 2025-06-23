@@ -281,7 +281,7 @@ export default function OrganizationBuilder({
 
         {/* Compact Item Cards */}
         <div className="space-y-3 mb-6">
-          {items.slice(1).map((item) => (
+          {(items.length > 0 && items[0]?.label === 'Table File' ? items.slice(1) : items).map((item) => (
             <div 
               key={item.id} 
               className="group relative flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all duration-200 cursor-pointer hover:border-blue-300 hover:shadow-sm"

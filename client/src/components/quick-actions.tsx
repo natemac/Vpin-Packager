@@ -1,5 +1,5 @@
 import { useRef, useCallback, useState } from 'react';
-import { Zap, Package, Eraser, Download, Save } from 'lucide-react';
+import { Zap, Eraser, Download, Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -13,10 +13,9 @@ interface QuickActionsProps {
   onLoadTemplate: (template: OrganizationTemplate) => void;
   onSaveTemplate: () => OrganizationTemplate;
   onClearInterface: () => void;
-  onShowPresetDialog: () => void;
 }
 
-export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearInterface, onShowPresetDialog }: QuickActionsProps) {
+export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearInterface }: QuickActionsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [showSaveDialog, setShowSaveDialog] = useState(false);
@@ -142,17 +141,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
             </div>
           </div>
 
-          {/* Preset Items */}
-          <div className="pt-3 border-t border-slate-200">
-            <Button
-              variant="outline"
-              className="w-full justify-start h-auto p-3"
-              onClick={onShowPresetDialog}
-            >
-              <Package className="text-purple-600 mr-2 h-4 w-4" />
-              <span className="text-sm font-medium">Add Preset Items</span>
-            </Button>
-          </div>
+          
 
           {/* Interface Actions */}
           <div className="pt-3 border-t border-slate-200">

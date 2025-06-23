@@ -108,7 +108,6 @@ export default function FileOrganizer() {
               onLoadTemplate={organization.loadTemplate}
               onSaveTemplate={organization.exportTemplate}
               onClearInterface={organization.clearAll}
-              onShowPresetDialog={handleShowPresetDialog}
             />
             
             <FileTreePreview 
