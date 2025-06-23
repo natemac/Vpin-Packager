@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { PINBALL_PRESETS, PresetItem, PresetCategory } from "@/lib/pinball-presets";
 import { OrganizationItem } from "@/types/organization";
 import { nanoid } from "nanoid";
@@ -21,17 +22,22 @@ interface PresetItemsDialogProps {
   onOpenChange: (open: boolean) => void;
   tableName: string;
   onAddPresetItems: (items: OrganizationItem[]) => void;
+  tableLocation?: string;
+  onTableLocationChange?: (location: string) => void;
 }
 
 export default function PresetItemsDialog({
   open,
   onOpenChange,
   tableName,
-  onAddPresetItems
+  onAddPresetItems,
+  tableLocation = "/emulators/Visual Pinball/Tables/",
+  onTableLocationChange
 }: PresetItemsDialogProps) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [parentPaths, setParentPaths] = useState<Record<string, string>>({});
   const [editingPath, setEditingPath] = useState<string | null>(null);
+  const [currentTableLocation, setCurrentTableLocation] = useState(tableLocation);
 
   // Initialize parent paths with default values when dialog opens
   useEffect(() => {
@@ -41,8 +47,9 @@ export default function PresetItemsDialog({
         initialPaths[category.name] = category.parentPath;
       });
       setParentPaths(initialPaths);
+      setCurrentTableLocation(tableLocation);
     }
-  }, [open]);
+  }, [open, tableLocation]);
 
   const handleItemToggle = (itemId: string) => {
     const newSelection = new Set(selectedItems);
@@ -77,6 +84,11 @@ export default function PresetItemsDialog({
   };
 
   const handleAddItems = () => {
+    // Update the table location if callback is provided
+    if (onTableLocationChange) {
+      onTableLocationChange(currentTableLocation);
+    }
+
     const itemsToAdd: OrganizationItem[] = [];
     
     selectedItems.forEach(itemId => {
@@ -145,6 +157,25 @@ export default function PresetItemsDialog({
           </DialogTitle>
           <DialogDescription>(Optional) Add Pre-configured Items below.</DialogDescription>
         </DialogHeader>
+
+        {/* Table Location Input */}
+        <div className="border-b pb-4 mb-4">
+          <div className="space-y-2">
+            <Label htmlFor="table-location" className="text-sm font-medium">
+              Table Location
+            </Label>
+            <Input
+              id="table-location"
+              value={currentTableLocation}
+              onChange={(e) => setCurrentTableLocation(e.target.value)}
+              placeholder="/emulators/Visual Pinball/Tables/"
+              className="font-mono text-sm"
+            />
+            <p className="text-xs text-slate-500">
+              This will be used as the base location for the table file and will update the main page.
+            </p>
+          </div>
+        </div>
 
         <div className="flex-1 overflow-y-auto space-y-6">
           {PINBALL_PRESETS.map((category) => {

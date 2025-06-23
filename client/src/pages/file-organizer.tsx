@@ -31,6 +31,13 @@ export default function FileOrganizer() {
     setPendingTableFile(null);
   };
 
+  const handleTableLocationChange = (location: string) => {
+    // Update the table location on the first item (table file)
+    if (organization.items.length > 0) {
+      organization.updateItem(organization.items[0].id, { location });
+    }
+  };
+
   const handlePresetDialogClose = () => {
     setShowPresetDialog(false);
     setPendingTableFile(null);
