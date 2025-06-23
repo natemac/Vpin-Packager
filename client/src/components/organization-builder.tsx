@@ -227,9 +227,22 @@ export default function OrganizationBuilder({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center">
-          <Plus className="text-primary mr-2 h-5 w-5" />
-          File Organization Structure
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Plus className="text-primary mr-2 h-5 w-5" />
+            File Organization Structure
+          </div>
+          {onShowPresetDialog && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onShowPresetDialog}
+              className="flex items-center"
+            >
+              <Package className="text-purple-600 mr-2 h-4 w-4" />
+              Add Preset Items
+            </Button>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>
