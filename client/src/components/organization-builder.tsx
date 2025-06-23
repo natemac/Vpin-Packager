@@ -405,6 +405,8 @@ export default function OrganizationBuilder({
                 <Label htmlFor="dialog-files">
                   {dialogType === 'folder' ? 'Select Folder' : 'Select Files'}
                 </Label>
+                
+                {/* File Input */}
                 <input
                   id="dialog-files"
                   type="file"
@@ -413,10 +415,24 @@ export default function OrganizationBuilder({
                   onChange={(e) => setDialogData(prev => ({ ...prev, files: e.target.files }))}
                   className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary/90"
                 />
-                {dialogData.files && (
-                  <p className="text-sm text-slate-600 mt-1">
-                    {dialogData.files.length} {dialogType === 'folder' ? 'items' : 'files'} selected
-                  </p>
+                
+                {/* Selected Files Display */}
+                {dialogData.files && dialogData.files.length > 0 ? (
+                  <div className="mt-2 p-3 border border-slate-200 rounded-md bg-slate-50">
+                    <p className="text-sm font-medium text-slate-700 mb-2">
+                      {dialogData.files.length} {dialogType === 'folder' ? 'items' : 'files'} selected:
+                    </p>
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {Array.from(dialogData.files).map((file, index) => (
+                        <div key={index} className="text-sm text-slate-600 flex items-center">
+                          <File className="h-3 w-3 mr-2 text-slate-400" />
+                          {file.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-slate-500 mt-1">No files selected</p>
                 )}
               </div>
 
