@@ -1,6 +1,6 @@
 import { OrganizationTemplate } from '@/types/organization';
 
-// Template loading functions
+// Static template loading from public directory
 export async function loadTemplate(templateName: string): Promise<OrganizationTemplate> {
   try {
     const response = await fetch(`/templates/${templateName}.json`);
@@ -28,5 +28,22 @@ export const BUILTIN_TEMPLATE_CONFIGS = {
   }
 };
 
-// Legacy export for backwards compatibility
-export const BUILTIN_TEMPLATES: Record<string, OrganizationTemplate> = {};
+// Pre-loaded templates for immediate access
+let templateCache: Record<string, OrganizationTemplate> = {};
+
+// Load all templates at startup
+export async function initializeTemplates(): Promise<void> {
+  try {
+    const templatePromises = Object.values(BUILTIN_TEMPLATE_CONFIGS).map(async (config) => {
+      const template = await loadTemplate(config.key);
+      templateCache[config.key] = template;
+      return template;
+    });
+    
+    await Promise.all(templatePromises);
+  } catch (error) {
+    console.warn('Some templates failed to load:', error);
+  }
+}
+
+export const BUILTIN_TEMPLATES = templateCache;
