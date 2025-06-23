@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Package, Folder, File, Files, Edit2 } from "lucide-react";
 import {
   Dialog,
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import { PINBALL_PRESETS, PresetItem, PresetCategory } from "@/lib/pinball-presets";
 import { OrganizationItem } from "@/types/organization";
 import { nanoid } from "nanoid";
@@ -29,6 +30,19 @@ export default function PresetItemsDialog({
   onAddPresetItems
 }: PresetItemsDialogProps) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [parentPaths, setParentPaths] = useState<Record<string, string>>({});
+  const [editingPath, setEditingPath] = useState<string | null>(null);
+
+  // Initialize parent paths with default values when dialog opens
+  useEffect(() => {
+    if (open) {
+      const initialPaths: Record<string, string> = {};
+      PINBALL_PRESETS.forEach(category => {
+        initialPaths[category.name] = category.parentPath;
+      });
+      setParentPaths(initialPaths);
+    }
+  }, [open]);
 
   const handleItemToggle = (itemId: string) => {
     const newSelection = new Set(selectedItems);
@@ -55,20 +69,31 @@ export default function PresetItemsDialog({
     setSelectedItems(newSelection);
   };
 
+  const handlePathEdit = (categoryName: string, newPath: string) => {
+    setParentPaths(prev => ({
+      ...prev,
+      [categoryName]: newPath
+    }));
+  };
+
   const handleAddItems = () => {
     const itemsToAdd: OrganizationItem[] = [];
     
     selectedItems.forEach(itemId => {
-      const presetItem = PINBALL_PRESETS
-        .flatMap(category => category.items)
-        .find(item => item.id === itemId);
+      const category = PINBALL_PRESETS.find(cat => 
+        cat.items.some(item => item.id === itemId)
+      );
+      const presetItem = category?.items.find(item => item.id === itemId);
       
-      if (presetItem) {
+      if (presetItem && category) {
+        const parentPath = parentPaths[category.name] || category.parentPath;
+        const fullLocation = parentPath + presetItem.defaultLocation;
+        
         const organizationItem: OrganizationItem = {
           id: nanoid(),
           type: presetItem.type,
           label: presetItem.label,
-          location: presetItem.defaultLocation,
+          location: fullLocation,
           options: {
             useTableName: presetItem.useTableName,
             convertToPng: false,
@@ -130,17 +155,53 @@ export default function PresetItemsDialog({
 
             return (
               <div key={category.name} className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-slate-900">{category.name}</h3>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleSelectAll(category)}
-                    className="text-xs"
-                  >
-                    {allSelected ? 'Deselect All' : 'Select All'}
-                    {someSelected && !allSelected && ` (${selectedInCategory})`}
-                  </Button>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-slate-900">{category.name}</h3>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleSelectAll(category)}
+                      className="text-xs"
+                    >
+                      {allSelected ? 'Deselect All' : 'Select All'}
+                      {someSelected && !allSelected && ` (${selectedInCategory})`}
+                    </Button>
+                  </div>
+                  
+                  {/* Editable Parent Path */}
+                  <div className="flex items-center space-x-2">
+                    {editingPath === category.name ? (
+                      <>
+                        <Input
+                          value={parentPaths[category.name] || category.parentPath}
+                          onChange={(e) => handlePathEdit(category.name, e.target.value)}
+                          className="text-sm font-mono"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              setEditingPath(null);
+                            }
+                          }}
+                          onBlur={() => setEditingPath(null)}
+                          autoFocus
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-sm font-mono text-slate-600 bg-slate-100 px-2 py-1 rounded">
+                          {parentPaths[category.name] || category.parentPath}
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setEditingPath(category.name)}
+                          className="h-6 w-6 p-0"
+                        >
+                          <Edit2 className="h-3 w-3" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
