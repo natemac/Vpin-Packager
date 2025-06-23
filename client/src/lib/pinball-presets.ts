@@ -46,7 +46,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-puppack",
         label: "PupPack",
         type: "folder",
-        defaultLocation: "emulators/PinUPSystem/PUPVideos/",
+        defaultLocation: "PinUPSystem/PUPVideos/",
         useTableName: false,
         category: "Visual Pinball X"
       }
@@ -54,12 +54,13 @@ export const PINBALL_PRESETS: PresetCategory[] = [
   },
   {
     name: "Future Pinball",
+    parentPath: "/emulators/Future Pinball/",
     items: [
       {
         id: "fp-library-files",
         label: "Library Files",
         type: "multiple",
-        defaultLocation: "emulators/Future Pinball/Libraries/",
+        defaultLocation: "Libraries/",
         useTableName: false,
         category: "Future Pinball"
       },
@@ -67,7 +68,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "fp-pinevent-puppack",
         label: "PinEvent PupPack",
         type: "folder",
-        defaultLocation: "emulators/PinUPSystem/PUPVideos/",
+        defaultLocation: "PinUPSystem/PUPVideos/",
         useTableName: false,
         category: "Future Pinball"
       },
@@ -75,7 +76,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "fp-cfg-pov",
         label: "CFG for POV",
         type: "single",
-        defaultLocation: "emulators/Future Pinball/BAM/cfg/",
+        defaultLocation: "BAM/cfg/",
         useTableName: true,
         category: "Future Pinball"
       }
@@ -83,12 +84,13 @@ export const PINBALL_PRESETS: PresetCategory[] = [
   },
   {
     name: "Pinball Emporium Media",
+    parentPath: "/collections/Visual Pinball X/medium_artwork/",
     items: [
       {
         id: "pe-cover",
         label: "Cover",
         type: "single",
-        defaultLocation: "collections/(EMULATOR)/medium_artwork/covers/",
+        defaultLocation: "covers/",
         useTableName: true,
         category: "Pinball Emporium"
       },
@@ -96,7 +98,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-topper",
         label: "Topper",
         type: "single",
-        defaultLocation: "collections/(EMULATOR)/medium_artwork/topper/",
+        defaultLocation: "toppers/",
         useTableName: true,
         category: "Pinball Emporium"
       },
