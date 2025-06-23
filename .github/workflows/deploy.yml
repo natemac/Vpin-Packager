@@ -31,13 +31,7 @@ jobs:
         run: npm ci
 
       - name: Build static site
-        run: |
-          echo "Building for GitHub Pages with production config..."
-          npx vite build --config vite.config.production.ts
-          echo "Verifying build output..."
-          ls -la dist/public/
-          echo "Contents of index.html:"
-          head -20 dist/public/index.html
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
