@@ -91,6 +91,7 @@ This is a client-side file organization and packaging tool specifically designed
 - June 23, 2025: Removed unused JSON template files and simplified template loading
 - June 23, 2025: Successfully deployed to GitHub Pages with production Vite config and correct base path
 - June 23, 2025: Fixed router base path to work in both Replit development and GitHub Pages production
+- June 23, 2025: Created comprehensive README.md explaining app functionality and features
 
 ## User Preferences
 
