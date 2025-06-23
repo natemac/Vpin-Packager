@@ -381,12 +381,18 @@ export default function OrganizationBuilder({
             <div className="space-y-4">
               {/* Label */}
               <div>
-                <Label htmlFor="dialog-label">Label</Label>
+                <Label htmlFor="dialog-label">
+                  {dialogType === 'folder' ? 'Folder Name' : 'Label'}
+                </Label>
                 <Input
                   id="dialog-label"
                   value={dialogData.label}
                   onChange={(e) => setDialogData(prev => ({ ...prev, label: e.target.value }))}
-                  placeholder={dialogType ? getItemTypeName(dialogType) : ''}
+                  placeholder={dialogType === 'folder' 
+                    ? (dialogData.renameFolder ? 'Enter new folder name' : 'Original folder name will be used')
+                    : (dialogType ? getItemTypeName(dialogType) : '')
+                  }
+                  disabled={dialogType === 'folder' && !dialogData.renameFolder}
                 />
               </div>
 
@@ -426,7 +432,16 @@ export default function OrganizationBuilder({
                   </Button>
                   <span className="text-sm text-slate-500">
                     {dialogData.files && dialogData.files.length > 0 
-                      ? `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected: ${Array.from(dialogData.files).map(f => f.name).join(', ')}`
+                      ? (dialogType === 'folder' 
+                          ? (() => {
+                              const firstFile = Array.from(dialogData.files)[0];
+                              if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
+                                const folderName = firstFile.webkitRelativePath.split('/')[0];
+                                return `1 folder selected: ${folderName}`;
+                              }
+                              return `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`;
+                            })()
+                          : `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected: ${Array.from(dialogData.files).map(f => f.name).join(', ')}`)
                       : 'No file selected.'}
                   </span>
                 </div>
@@ -490,9 +505,24 @@ export default function OrganizationBuilder({
                     <Checkbox
                       id="dialog-rename-folder"
                       checked={dialogData.renameFolder}
-                      onCheckedChange={(checked) => 
-                        setDialogData(prev => ({ ...prev, renameFolder: checked as boolean }))
-                      }
+                      onCheckedChange={(checked) => {
+                        const newChecked = checked as boolean;
+                        setDialogData(prev => {
+                          // Clear label when unchecking, populate when checking
+                          let newLabel = prev.label;
+                          if (!newChecked) {
+                            newLabel = '';
+                          } else if (prev.files && prev.files.length > 0) {
+                            // Try to get original folder name as starting point
+                            const firstFile = Array.from(prev.files)[0];
+                            if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
+                              const folderName = firstFile.webkitRelativePath.split('/')[0];
+                              newLabel = folderName;
+                            }
+                          }
+                          return { ...prev, renameFolder: newChecked, label: newLabel };
+                        });
+                      }}
                     />
                     <Label htmlFor="dialog-rename-folder">Rename folder</Label>
                   </div>
