@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Package, Folder, File, Files } from "lucide-react";
+import { Package, Folder, File, Files, Edit2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,

@@ -92,7 +92,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         type: "single",
         defaultLocation: "covers/",
         useTableName: true,
-        category: "Pinball Emporium"
+        category: "Pinball Emporium Media"
       },
       {
         id: "pe-topper",
@@ -100,47 +100,47 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         type: "single",
         defaultLocation: "toppers/",
         useTableName: true,
-        category: "Pinball Emporium"
+        category: "Pinball Emporium Media"
       },
       {
         id: "pe-marquee",
         label: "Marquee",
         type: "single",
-        defaultLocation: "collections/(EMULATOR)/medium_artwork/video_marquees/",
+        defaultLocation: "marquees/",
         useTableName: true,
-        category: "Pinball Emporium"
+        category: "Pinball Emporium Media"
       },
       {
         id: "pe-table",
         label: "Table",
         type: "single",
-        defaultLocation: "collections/(EMULATOR)/medium_artwork/video/",
+        defaultLocation: "tables/",
         useTableName: true,
-        category: "Pinball Emporium"
+        category: "Pinball Emporium Media"
       },
       {
         id: "pe-logo",
         label: "Logo",
         type: "single",
-        defaultLocation: "collections/(EMULATOR)/medium_artwork/logo/",
+        defaultLocation: "logos/",
         useTableName: true,
-        category: "Pinball Emporium"
+        category: "Pinball Emporium Media"
       },
       {
         id: "pe-credit",
         label: "Credit",
         type: "single",
-        defaultLocation: "collections/(EMULATOR)/medium_artwork/credit/",
+        defaultLocation: "credits/",
         useTableName: true,
-        category: "Pinball Emporium"
+        category: "Pinball Emporium Media"
       },
       {
         id: "pe-rules",
         label: "Rules",
         type: "single",
-        defaultLocation: "collections/(EMULATOR)/medium_artwork/rules",
+        defaultLocation: "rules/",
         useTableName: true,
-        category: "Pinball Emporium"
+        category: "Pinball Emporium Media"
       }
     ]
   }
