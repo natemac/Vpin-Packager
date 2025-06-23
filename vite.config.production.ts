@@ -12,7 +12,7 @@ export default defineConfig({
     },
   },
   root: path.resolve(__dirname, "client"),
-  base: "./", // Important for GitHub Pages
+  base: "/YOUR_REPOSITORY_NAME/", // Replace with your actual repository name
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
