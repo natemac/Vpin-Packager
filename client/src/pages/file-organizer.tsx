@@ -59,7 +59,7 @@ export default function FileOrganizer() {
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl font-semibold text-slate-900 flex items-center">
             <FolderOpen className="text-primary mr-3 h-6 w-6" />
-            File Organizer Pro
+            Virtual Pinball Packager
             <span className="text-sm font-normal text-slate-500 ml-2">Package & rename files to easily add them to your cabinet.</span>
           </h1>
         </div>
@@ -122,7 +122,7 @@ export default function FileOrganizer() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between">
             <p className="text-sm text-slate-500">
-              File Organizer Pro - Designed for Virtual Pinball enthusiasts
+              Virtual Pinball Packager - Designed for Virtual Pinball enthusiasts
             </p>
             <div className="flex items-center space-x-4 text-sm text-slate-500">
               <span>Client-side processing</span>
