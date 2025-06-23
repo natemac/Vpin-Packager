@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FolderOpen } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
 import { OrganizationItem } from "@/types/organization";
+import { DEFAULT_TABLE_LOCATION } from "@/lib/pinball-presets";
 import FileUploadZone from "@/components/file-upload-zone";
 import OrganizationBuilder from "@/components/organization-builder";
 import FileTreePreview from "@/components/file-tree-preview";
@@ -115,7 +116,7 @@ export default function FileOrganizer() {
         onOpenChange={setShowPresetDialog}
         tableName={pendingTableFile?.name || organization.tableName || 'My Table'}
         onAddPresetItems={handleAddPresetItems}
-        tableLocation={organization.items.length > 0 ? organization.items[0].location : "/emulators/Visual Pinball/Tables/"}
+        tableLocation={organization.items.length > 0 ? organization.items[0].location : DEFAULT_TABLE_LOCATION}
         onTableLocationChange={handleTableLocationChange}
       />
 
