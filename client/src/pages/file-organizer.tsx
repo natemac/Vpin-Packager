@@ -60,11 +60,10 @@ export default function FileOrganizer() {
           <h1 className="text-2xl font-semibold text-slate-900 flex items-center">
             <FolderOpen className="text-primary mr-3 h-6 w-6" />
             File Organizer Pro
-            <span className="text-sm font-normal text-slate-500 ml-2">Virtual Pinball Edition</span>
+            <span className="text-sm font-normal text-slate-500 ml-2">Package & rename files to easily add them to your cabinet.</span>
           </h1>
         </div>
       </header>
-
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-6">
         <div className="grid grid-cols-12 gap-6">
@@ -109,7 +108,6 @@ export default function FileOrganizer() {
           </div>
         </div>
       </main>
-
       {/* Preset Items Dialog */}
       <PresetItemsDialog
         open={showPresetDialog}
@@ -119,7 +117,6 @@ export default function FileOrganizer() {
         tableLocation={organization.items.length > 0 ? organization.items[0].location : DEFAULT_TABLE_LOCATION}
         onTableLocationChange={handleTableLocationChange}
       />
-
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 mt-12 py-6">
         <div className="max-w-7xl mx-auto px-6">

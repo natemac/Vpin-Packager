@@ -13,7 +13,7 @@ export interface PresetCategory {
   items: PresetItem[];
 }
 
-export const DEFAULT_TABLE_LOCATION = "emulators/Visual Pinball/Bob/";
+export const DEFAULT_TABLE_LOCATION = "emulators/Visual Pinball/Tables/";
 
 export const PINBALL_PRESETS: PresetCategory[] = [
   {
@@ -22,18 +22,18 @@ export const PINBALL_PRESETS: PresetCategory[] = [
     items: [
       {
         id: "vpx-directb2s",
-        label: "directb2s",
+        label: "directb2s Backglass",
         type: "single",
         defaultLocation: "emulators/Visual Pinball/Tables/",
         useTableName: true,
         category: "Visual Pinball X"
       },
       {
-        id: "vpx-rom",
-        label: "vPinMAME ROM",
+        id: "vpx-directb2sRES",
+        label: "directb2s Resolution",
         type: "single",
-        defaultLocation: "VPinMAME/roms/",
-        useTableName: false,
+        defaultLocation: "emulators/Visual Pinball/Tables/",
+        useTableName: true,
         category: "Visual Pinball X"
       },
       {
@@ -49,6 +49,22 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         label: "DMD AltSound",
         type: "folder",
         defaultLocation: "VPinMAME/altsound/",
+        useTableName: false,
+        category: "Visual Pinball X"
+      },
+      {
+        id: "vpx-FlexDMD",
+        label: "FlexDMD",
+        type: "folder",
+        defaultLocation: "VPinMAME/Tables/",
+        useTableName: false,
+        category: "Visual Pinball X"
+      },
+      {
+        id: "vpx-rom",
+        label: "vPinMAME ROM",
+        type: "single",
+        defaultLocation: "VPinMAME/roms/",
         useTableName: false,
         category: "Visual Pinball X"
       },
@@ -83,9 +99,9 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         category: "Future Pinball"
       },
       {
-        id: "fp-cfg-pov",
-        label: "CFG for POV",
-        type: "single",
+        id: "fp-cfg",
+        label: "BAM CFGs",
+        type: "multiple",
         defaultLocation: "BAM/cfg/",
         useTableName: true,
         category: "Future Pinball"
