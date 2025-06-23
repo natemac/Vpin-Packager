@@ -9,18 +9,20 @@ export interface PresetItem {
 
 export interface PresetCategory {
   name: string;
+  parentPath: string;
   items: PresetItem[];
 }
 
 export const PINBALL_PRESETS: PresetCategory[] = [
   {
     name: "Visual Pinball X",
+    parentPath: "/emulators/Visual Pinball/",
     items: [
       {
         id: "vpx-directb2s",
         label: "directb2s",
         type: "single",
-        defaultLocation: "emulators/Visual Pinball/Tables/",
+        defaultLocation: "Tables/",
         useTableName: true,
         category: "Visual Pinball X"
       },
@@ -28,7 +30,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-rom",
         label: "vPinMAME ROM",
         type: "single",
-        defaultLocation: "emulators/Visual Pinball/VPinMAME/roms/",
+        defaultLocation: "VPinMAME/roms/",
         useTableName: false,
         category: "Visual Pinball X"
       },
@@ -36,7 +38,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-dmd-altcolor",
         label: "DMD Alt Color",
         type: "folder",
-        defaultLocation: "emulators/Visual Pinball/VPinMAME/altcolor/",
+        defaultLocation: "VPinMAME/altcolor/",
         useTableName: false,
         category: "Visual Pinball X"
       },

@@ -134,7 +134,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
               <Button 
                 variant="outline"
                 onClick={handleSaveTemplate}
-                className="w-full h-10 text-sm"
+                className="w-full h-10 text-sm text-left"
               >
                 <Save className="mr-2 h-4 w-4" />
                 Save Template
