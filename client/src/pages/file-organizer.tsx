@@ -115,6 +115,8 @@ export default function FileOrganizer() {
         onOpenChange={setShowPresetDialog}
         tableName={pendingTableFile?.name || organization.tableName || 'My Table'}
         onAddPresetItems={handleAddPresetItems}
+        tableLocation={organization.items.length > 0 ? organization.items[0].location : "/emulators/Visual Pinball/Tables/"}
+        onTableLocationChange={handleTableLocationChange}
       />
 
       {/* Footer */}
