@@ -25,11 +25,31 @@ export async function generateZipFromOrganization(
     if (item.location) {
       const folderPath = item.location.replace(/\/$/, ''); // Remove trailing slash
       if (folderPath) {
-        targetFolder = mainFolder.folder(folderPath);
-        if (!targetFolder) {
+        const newFolder = mainFolder.folder(folderPath);
+        if (!newFolder) {
           throw new Error(`Failed to create folder: ${folderPath}`);
         }
+        targetFolder = newFolder;
       }
+    }
+
+    // For folder items, create a subfolder with the appropriate name
+    if (item.type === 'folder') {
+      let folderName: string;
+      if (item.options.renameFolder) {
+        folderName = item.label || `Folder_${Date.now()}`;
+      } else {
+        // Extract the actual folder name from the first file's webkitRelativePath
+        const firstFile = item.files[0];
+        if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
+          const pathParts = firstFile.webkitRelativePath.split('/');
+          folderName = pathParts[0] || item.label || `Folder_${Date.now()}`;
+        } else {
+          folderName = item.label || `Folder_${Date.now()}`;
+        }
+      }
+      
+      targetFolder = targetFolder.folder(folderName)!;
     }
 
     // Process files based on item type
@@ -123,8 +143,21 @@ export function generateFileTree(items: OrganizationItem[], tableName: string): 
     if (item.type === 'folder') {
       const targetFolder = folderMap.get(item.location.replace(/\/$/, '')) || root;
       
-      // Add a single folder node representing the uploaded folder
-      const folderName = item.label || `Folder (${item.files.length} files)`;
+      // Use actual folder name unless rename folder option is enabled
+      let folderName: string;
+      if (item.options.renameFolder) {
+        folderName = item.label || `Folder (${item.files.length} files)`;
+      } else {
+        // Extract the actual folder name from the first file's webkitRelativePath
+        const firstFile = item.files?.[0];
+        if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
+          const pathParts = firstFile.webkitRelativePath.split('/');
+          folderName = pathParts[0] || item.label || `Folder (${item.files.length} files)`;
+        } else {
+          folderName = item.label || `Folder (${item.files.length} files)`;
+        }
+      }
+      
       const folderNode: FileTreeNode = {
         name: folderName,
         type: 'folder',
