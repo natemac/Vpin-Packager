@@ -279,13 +279,7 @@ export default function OrganizationBuilder({
                 handleCardClick(item);
               }}
             >
-              {/* Drop zone overlay */}
-              <div className="absolute inset-0 bg-blue-50 border-2 border-dashed border-blue-300 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none flex items-center justify-center">
-                <div className="text-blue-600 text-sm font-medium flex items-center">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Drop files here or click to browse
-                </div>
-              </div>
+
               
               <div className="flex items-center space-x-3 relative z-10">
                 {getItemIcon(item.type)}
