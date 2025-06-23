@@ -24,7 +24,7 @@ export function useOrganization() {
       id: nanoid(),
       type: 'single',
       label: 'Table File',
-      location: 'tables/',
+      location: '/emulators/Visual Pinball/Tables/',
       options: { useTableName: true },
       files: [tableFile]
     };

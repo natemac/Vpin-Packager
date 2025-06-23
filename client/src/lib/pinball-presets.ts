@@ -83,6 +83,68 @@ export const PINBALL_PRESETS: PresetCategory[] = [
     ]
   },
   {
+    name: "Pinup Popper Media",
+    parentPath: "/collections/Visual Pinball X/medium_artwork/",
+    items: [
+      {
+        id: "pp-wheel",
+        label: "Wheel",
+        type: "single",
+        defaultLocation: "wheel/",
+        useTableName: true,
+        category: "Pinup Popper Media"
+      },
+      {
+        id: "pp-topper",
+        label: "Topper",
+        type: "single",
+        defaultLocation: "toppers/",
+        useTableName: true,
+        category: "Pinup Popper Media"
+      },
+      {
+        id: "pp-marquee",
+        label: "Marquee",
+        type: "single",
+        defaultLocation: "marquees/",
+        useTableName: true,
+        category: "Pinup Popper Media"
+      },
+      {
+        id: "pp-table",
+        label: "Table",
+        type: "single",
+        defaultLocation: "tables/",
+        useTableName: true,
+        category: "Pinup Popper Media"
+      },
+      {
+        id: "pp-logo",
+        label: "Logo",
+        type: "single",
+        defaultLocation: "logos/",
+        useTableName: true,
+        category: "Pinup Popper Media"
+      },
+      {
+        id: "pp-credit",
+        label: "Credit",
+        type: "single",
+        defaultLocation: "credits/",
+        useTableName: true,
+        category: "Pinup Popper Media"
+      },
+      {
+        id: "pp-rules",
+        label: "Rules",
+        type: "single",
+        defaultLocation: "rules/",
+        useTableName: true,
+        category: "Pinup Popper Media"
+      }
+    ]
+  },
+  {
     name: "Pinball Emporium Media",
     parentPath: "/collections/Visual Pinball X/medium_artwork/",
     items: [
