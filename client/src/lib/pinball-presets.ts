@@ -16,13 +16,13 @@ export interface PresetCategory {
 export const PINBALL_PRESETS: PresetCategory[] = [
   {
     name: "Visual Pinball X",
-    parentPath: "/emulators/Visual Pinball/",
+    parentPath: "emulators/Visual Pinball/",
     items: [
       {
         id: "vpx-directb2s",
         label: "directb2s",
         type: "single",
-        defaultLocation: "/emulators/Visual Pinball/Tables/",
+        defaultLocation: "emulators/Visual Pinball/Tables/",
         useTableName: true,
         category: "Visual Pinball X"
       },
@@ -36,9 +36,17 @@ export const PINBALL_PRESETS: PresetCategory[] = [
       },
       {
         id: "vpx-dmd-altcolor",
-        label: "DMD Alt Color",
+        label: "DMD AltColor",
         type: "folder",
         defaultLocation: "VPinMAME/altcolor/",
+        useTableName: false,
+        category: "Visual Pinball X"
+      },
+      {
+        id: "vpx-dmd-altsound",
+        label: "DMD AltSound",
+        type: "folder",
+        defaultLocation: "VPinMAME/altsound/",
         useTableName: false,
         category: "Visual Pinball X"
       },
@@ -54,7 +62,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
   },
   {
     name: "Future Pinball",
-    parentPath: "/emulators/Future Pinball/",
+    parentPath: "emulators/Future Pinball/",
     items: [
       {
         id: "fp-library-files",
@@ -84,7 +92,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
   },
   {
     name: "Pinup Popper Media",
-    parentPath: "/collections/Visual Pinball X/medium_artwork/",
+    parentPath: "collections/Visual Pinball X/medium_artwork/",
     items: [
       {
         id: "pp-wheel",
@@ -146,7 +154,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
   },
   {
     name: "Pinball Emporium Media",
-    parentPath: "/collections/Visual Pinball X/medium_artwork/",
+    parentPath: "collections/Visual Pinball X/medium_artwork/",
     items: [
       {
         id: "pe-cover",
