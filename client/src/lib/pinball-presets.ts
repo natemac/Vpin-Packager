@@ -22,7 +22,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-directb2s",
         label: "directb2s",
         type: "single",
-        defaultLocation: "Tables/",
+        defaultLocation: "/emulators/Visual Pinball/Tables/",
         useTableName: true,
         category: "Visual Pinball X"
       },

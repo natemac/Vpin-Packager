@@ -171,9 +171,7 @@ export default function PresetItemsDialog({
               placeholder="/emulators/Visual Pinball/Tables/"
               className="font-mono text-sm"
             />
-            <p className="text-xs text-slate-500">
-              This will be used as the base location for the table file and will update the main page.
-            </p>
+            
           </div>
         </div>
 
