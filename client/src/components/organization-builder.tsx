@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3, Upload, MousePointer } from 'lucide-react';
+import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3, Upload, MousePointer, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,7 @@ interface OrganizationBuilderProps {
   onRemoveItem: (id: string) => void;
   tableName: string;
   onTableNameChange: (name: string) => void;
+  onShowPresetDialog?: () => void;
 }
 
 export default function OrganizationBuilder({ 
@@ -25,7 +26,8 @@ export default function OrganizationBuilder({
   onUpdateItem, 
   onRemoveItem,
   tableName,
-  onTableNameChange
+  onTableNameChange,
+  onShowPresetDialog
 }: OrganizationBuilderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -344,6 +346,18 @@ export default function OrganizationBuilder({
 
           {dropdownOpen && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg z-10">
+              {onShowPresetDialog && (
+                <button
+                  className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors border-b border-slate-100 flex items-center"
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    onShowPresetDialog();
+                  }}
+                >
+                  <Package className="text-purple-600 mr-3 h-4 w-4" />
+                  <span className="font-medium">Add Preset Items</span>
+                </button>
+              )}
               <button
                 className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors border-b border-slate-100 flex items-center"
                 onClick={() => openAddDialog('single')}

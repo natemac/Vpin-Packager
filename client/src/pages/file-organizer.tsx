@@ -91,6 +91,7 @@ export default function FileOrganizer() {
               onRemoveItem={organization.removeItem}
               tableName={organization.tableName}
               onTableNameChange={organization.setTableName}
+              onShowPresetDialog={handleShowPresetDialog}
             />
           </div>
 

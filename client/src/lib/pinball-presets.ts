@@ -24,7 +24,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-directb2s",
         label: "directb2s Backglass",
         type: "single",
-        defaultLocation: "emulators/Visual Pinball/Tables/",
+        defaultLocation: "Tables/",
         useTableName: true,
         category: "Visual Pinball X"
       },
@@ -32,7 +32,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "vpx-directb2sRES",
         label: "directb2s Resolution",
         type: "single",
-        defaultLocation: "emulators/Visual Pinball/Tables/",
+        defaultLocation: "Tables/",
         useTableName: true,
         category: "Visual Pinball X"
       },
@@ -67,14 +67,6 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         defaultLocation: "VPinMAME/roms/",
         useTableName: false,
         category: "Visual Pinball X"
-      },
-      {
-        id: "vpx-puppack",
-        label: "PupPack",
-        type: "folder",
-        defaultLocation: "PinUPSystem/PUPVideos/",
-        useTableName: false,
-        category: "Visual Pinball X"
       }
     ]
   },
@@ -91,20 +83,26 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         category: "Future Pinball"
       },
       {
-        id: "fp-pinevent-puppack",
-        label: "PinEvent PupPack",
-        type: "folder",
-        defaultLocation: "PinUPSystem/PUPVideos/",
-        useTableName: false,
-        category: "Future Pinball"
-      },
-      {
         id: "fp-cfg",
         label: "BAM CFGs",
         type: "multiple",
         defaultLocation: "BAM/cfg/",
         useTableName: true,
         category: "Future Pinball"
+      }
+    ]
+  },
+  {
+    name: "PubPack",
+    parentPath: "emulators/",
+    items: [
+      {
+        id: "vpx-puppack",
+        label: "PupPack",
+        type: "folder",
+        defaultLocation: "PinUPSystem/PUPVideos/",
+        useTableName: false,
+        category: "PupPack"
       }
     ]
   },
@@ -119,6 +117,68 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         defaultLocation: "Mods/Cabinet/",
         useTableName: false,
         category: "Pinball FX"
+      }
+    ]
+  },
+  {
+    name: "Pinball Emporium Media",
+    parentPath: "collections/Visual Pinball X/medium_artwork/",
+    items: [
+      {
+        id: "pe-cover",
+        label: "Cover",
+        type: "single",
+        defaultLocation: "covers/",
+        useTableName: true,
+        category: "Pinball Emporium Media"
+      },
+      {
+        id: "pe-topper",
+        label: "Topper",
+        type: "single",
+        defaultLocation: "toppers/",
+        useTableName: true,
+        category: "Pinball Emporium Media"
+      },
+      {
+        id: "pe-marquee",
+        label: "Marquee",
+        type: "single",
+        defaultLocation: "marquees/",
+        useTableName: true,
+        category: "Pinball Emporium Media"
+      },
+      {
+        id: "pe-table",
+        label: "Table",
+        type: "single",
+        defaultLocation: "tables/",
+        useTableName: true,
+        category: "Pinball Emporium Media"
+      },
+      {
+        id: "pe-logo",
+        label: "Logo",
+        type: "single",
+        defaultLocation: "logos/",
+        useTableName: true,
+        category: "Pinball Emporium Media"
+      },
+      {
+        id: "pe-credit",
+        label: "Credit",
+        type: "single",
+        defaultLocation: "credits/",
+        useTableName: true,
+        category: "Pinball Emporium Media"
+      },
+      {
+        id: "pe-rules",
+        label: "Rules",
+        type: "single",
+        defaultLocation: "rules/",
+        useTableName: true,
+        category: "Pinball Emporium Media"
       }
     ]
   },
@@ -182,68 +242,6 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         useTableName: true,
         category: "Pinup Popper Media"
       },
-    ]
-  },
-  {
-    name: "Pinball Emporium Media",
-    parentPath: "collections/Visual Pinball X/medium_artwork/",
-    items: [
-      {
-        id: "pe-cover",
-        label: "Cover",
-        type: "single",
-        defaultLocation: "covers/",
-        useTableName: true,
-        category: "Pinball Emporium Media"
-      },
-      {
-        id: "pe-topper",
-        label: "Topper",
-        type: "single",
-        defaultLocation: "toppers/",
-        useTableName: true,
-        category: "Pinball Emporium Media"
-      },
-      {
-        id: "pe-marquee",
-        label: "Marquee",
-        type: "single",
-        defaultLocation: "marquees/",
-        useTableName: true,
-        category: "Pinball Emporium Media"
-      },
-      {
-        id: "pe-table",
-        label: "Table",
-        type: "single",
-        defaultLocation: "tables/",
-        useTableName: true,
-        category: "Pinball Emporium Media"
-      },
-      {
-        id: "pe-logo",
-        label: "Logo",
-        type: "single",
-        defaultLocation: "logos/",
-        useTableName: true,
-        category: "Pinball Emporium Media"
-      },
-      {
-        id: "pe-credit",
-        label: "Credit",
-        type: "single",
-        defaultLocation: "credits/",
-        useTableName: true,
-        category: "Pinball Emporium Media"
-      },
-      {
-        id: "pe-rules",
-        label: "Rules",
-        type: "single",
-        defaultLocation: "rules/",
-        useTableName: true,
-        category: "Pinball Emporium Media"
-      }
     ]
   }
 ];
