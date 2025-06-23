@@ -24,6 +24,7 @@ interface PresetItemsDialogProps {
   onAddPresetItems: (items: OrganizationItem[]) => void;
   tableLocation?: string;
   onTableLocationChange?: (location: string) => void;
+  onTableNameChange?: (name: string) => void;
 }
 
 export default function PresetItemsDialog({
@@ -32,14 +33,16 @@ export default function PresetItemsDialog({
   tableName,
   onAddPresetItems,
   tableLocation = DEFAULT_TABLE_LOCATION,
-  onTableLocationChange
+  onTableLocationChange,
+  onTableNameChange
 }: PresetItemsDialogProps) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [parentPaths, setParentPaths] = useState<Record<string, string>>({});
   const [editingPath, setEditingPath] = useState<string | null>(null);
   const [currentTableLocation, setCurrentTableLocation] = useState(DEFAULT_TABLE_LOCATION);
+  const [currentTableName, setCurrentTableName] = useState(tableName);
 
-  // Initialize parent paths with default values when dialog opens
+  // Initialize parent paths and table name when dialog opens
   useEffect(() => {
     if (open) {
       const initialPaths: Record<string, string> = {};
@@ -47,10 +50,10 @@ export default function PresetItemsDialog({
         initialPaths[category.name] = category.parentPath;
       });
       setParentPaths(initialPaths);
-      // Always use the default table location from presets unless explicitly overridden
       setCurrentTableLocation(DEFAULT_TABLE_LOCATION);
+      setCurrentTableName(tableName);
     }
-  }, [open]);
+  }, [open, tableName]);
 
   const handleItemToggle = (itemId: string) => {
     const newSelection = new Set(selectedItems);
@@ -159,8 +162,24 @@ export default function PresetItemsDialog({
           <DialogDescription>(Optional) Add Pre-configured Items below.</DialogDescription>
         </DialogHeader>
 
-        {/* Table Location Input */}
-        <div className="border-b pb-4 mb-4">
+        {/* Table Name and Location Inputs */}
+        <div className="border-b pb-4 mb-4 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="table-name" className="text-sm font-medium">
+              Table Name
+            </Label>
+            <Input
+              id="table-name"
+              value={currentTableName}
+              onChange={(e) => {
+                setCurrentTableName(e.target.value);
+                onTableNameChange?.(e.target.value);
+              }}
+              placeholder="Enter table name"
+              className="text-sm"
+            />
+          </div>
+          
           <div className="space-y-2">
             <Label htmlFor="table-location" className="text-sm font-medium">
               Table Location
@@ -172,7 +191,6 @@ export default function PresetItemsDialog({
               placeholder={DEFAULT_TABLE_LOCATION}
               className="font-mono text-sm"
             />
-
           </div>
         </div>
 

@@ -109,6 +109,20 @@ export const PINBALL_PRESETS: PresetCategory[] = [
     ]
   },
   {
+    name: "Pinball FX/FX3/M",
+    parentPath: "Steam/stemapps/common/Pinball FX/PinballFX/",
+    items: [
+      {
+        id: "fx-backglass",
+        label: "Backglass",
+        type: "single",
+        defaultLocation: "Mods/Cabinet/",
+        useTableName: false,
+        category: "Pinball FX"
+      }
+    ]
+  },
+  {
     name: "Pinup Popper Media",
     parentPath: "collections/Visual Pinball X/medium_artwork/",
     items: [
@@ -121,53 +135,53 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         category: "Pinup Popper Media"
       },
       {
-        id: "pp-topper",
-        label: "Topper",
+        id: "pp-audio",
+        label: "Audio",
         type: "single",
-        defaultLocation: "toppers/",
+        defaultLocation: "audio/",
         useTableName: true,
         category: "Pinup Popper Media"
       },
       {
-        id: "pp-marquee",
-        label: "Marquee",
+        id: "pp-audiolaunchshort",
+        label: "Audio Launch Short",
         type: "single",
-        defaultLocation: "marquees/",
+        defaultLocation: "audio launch short/",
         useTableName: true,
         category: "Pinup Popper Media"
       },
       {
-        id: "pp-table",
-        label: "Table",
+        id: "pp-audiolaunch",
+        label: "Audio Launch",
         type: "single",
-        defaultLocation: "tables/",
+        defaultLocation: "audio launch/",
         useTableName: true,
         category: "Pinup Popper Media"
       },
       {
-        id: "pp-logo",
-        label: "Logo",
+        id: "pp-backglass",
+        label: "Backglass",
         type: "single",
-        defaultLocation: "logos/",
+        defaultLocation: "backglass/",
         useTableName: true,
         category: "Pinup Popper Media"
       },
       {
-        id: "pp-credit",
-        label: "Credit",
+        id: "pp-loadingsignshort",
+        label: "Loading Sign Short",
         type: "single",
-        defaultLocation: "credits/",
+        defaultLocation: "loading sign short/",
         useTableName: true,
         category: "Pinup Popper Media"
       },
       {
-        id: "pp-rules",
-        label: "Rules",
+        id: "pp-loadingsign",
+        label: "Loading Sign",
         type: "single",
-        defaultLocation: "rules/",
+        defaultLocation: "loading sign/",
         useTableName: true,
         category: "Pinup Popper Media"
-      }
+      },
     ]
   },
   {

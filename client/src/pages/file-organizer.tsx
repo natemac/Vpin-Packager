@@ -39,6 +39,16 @@ export default function FileOrganizer() {
     }
   };
 
+  const handleTableNameChange = (name: string) => {
+    // Update the table name in the organization
+    organization.setTableName(name);
+    
+    // If there's a pending table file, update its name too
+    if (pendingTableFile) {
+      setPendingTableFile(prev => prev ? { ...prev, name } : null);
+    }
+  };
+
   const handlePresetDialogClose = () => {
     setShowPresetDialog(false);
     setPendingTableFile(null);
@@ -116,6 +126,7 @@ export default function FileOrganizer() {
         onAddPresetItems={handleAddPresetItems}
         tableLocation={organization.items.length > 0 ? organization.items[0].location : DEFAULT_TABLE_LOCATION}
         onTableLocationChange={handleTableLocationChange}
+        onTableNameChange={handleTableNameChange}
       />
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 mt-12 py-6">
