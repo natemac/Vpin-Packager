@@ -155,21 +155,10 @@ export const BUILTIN_TEMPLATES: Record<string, OrganizationTemplate> = {
   'pinup-popper': PINUP_POPPER_TEMPLATE
 };
 
-// Template loading function with embedded fallback
+// Template loading function for embedded templates
 export async function loadTemplate(templateName: string): Promise<OrganizationTemplate> {
-  // First try embedded templates
   if (BUILTIN_TEMPLATES[templateName]) {
     return BUILTIN_TEMPLATES[templateName];
-  }
-  
-  // Fallback to fetch for custom templates
-  try {
-    const response = await fetch(`/templates/${templateName}.json`);
-    if (response.ok) {
-      return await response.json();
-    }
-  } catch (error) {
-    console.warn(`Failed to fetch template ${templateName}:`, error);
   }
   
   throw new Error(`Template not found: ${templateName}`);
