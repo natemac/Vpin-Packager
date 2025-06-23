@@ -37,7 +37,7 @@ export default function PresetItemsDialog({
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [parentPaths, setParentPaths] = useState<Record<string, string>>({});
   const [editingPath, setEditingPath] = useState<string | null>(null);
-  const [currentTableLocation, setCurrentTableLocation] = useState(tableLocation);
+  const [currentTableLocation, setCurrentTableLocation] = useState(DEFAULT_TABLE_LOCATION);
 
   // Initialize parent paths with default values when dialog opens
   useEffect(() => {
@@ -47,9 +47,10 @@ export default function PresetItemsDialog({
         initialPaths[category.name] = category.parentPath;
       });
       setParentPaths(initialPaths);
-      setCurrentTableLocation(tableLocation);
+      // Always use the default table location from presets unless explicitly overridden
+      setCurrentTableLocation(DEFAULT_TABLE_LOCATION);
     }
-  }, [open, tableLocation]);
+  }, [open]);
 
   const handleItemToggle = (itemId: string) => {
     const newSelection = new Set(selectedItems);
