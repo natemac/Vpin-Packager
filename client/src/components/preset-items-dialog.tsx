@@ -31,7 +31,7 @@ export default function PresetItemsDialog({
   onOpenChange,
   tableName,
   onAddPresetItems,
-  tableLocation = "/emulators/Visual Pinball/Tables/",
+  tableLocation = "emulators/Visual Pinball/Tables/",
   onTableLocationChange
 }: PresetItemsDialogProps) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
@@ -168,7 +168,7 @@ export default function PresetItemsDialog({
               id="table-location"
               value={currentTableLocation}
               onChange={(e) => setCurrentTableLocation(e.target.value)}
-              placeholder="/emulators/Visual Pinball/Tables/"
+              placeholder="emulators/Visual Pinball/Tables/"
               className="font-mono text-sm"
             />
             
