@@ -12,7 +12,7 @@ export default defineConfig({
     },
   },
   root: path.resolve(__dirname, "client"),
-  base: "/YOUR_REPOSITORY_NAME/", // Replace with your actual repository name
+  base: "/Vpin-Packager/", // Your GitHub repository name
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
