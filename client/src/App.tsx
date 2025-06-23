@@ -7,8 +7,10 @@ import FileOrganizer from "@/pages/file-organizer";
 import NotFound from "@/pages/not-found";
 
 function AppRouter() {
+  const base = import.meta.env.PROD ? "/Vpin-Packager" : "";
+  
   return (
-    <Router base="/Vpin-Packager">
+    <Router base={base}>
       <Switch>
         <Route path="/" component={FileOrganizer} />
         <Route component={NotFound} />
