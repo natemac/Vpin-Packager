@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Package, Folder, File, Files } from "lucide-react";
+import { Package, Folder, File, Files } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -143,7 +143,7 @@ export default function PresetItemsDialog({
                   </Button>
                 </div>
 
-                <div className="grid gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   {category.items.map((item) => {
                     const isSelected = selectedItems.has(item.id);
                     
@@ -151,7 +151,7 @@ export default function PresetItemsDialog({
                       <div
                         key={item.id}
                         className={`
-                          border rounded-lg p-4 cursor-pointer transition-all duration-200
+                          border rounded-lg p-3 cursor-pointer transition-all duration-200
                           ${isSelected 
                             ? 'border-primary bg-primary/5 shadow-sm' 
                             : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
@@ -159,31 +159,18 @@ export default function PresetItemsDialog({
                         `}
                         onClick={() => handleItemToggle(item.id)}
                       >
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-start space-x-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
                             <Checkbox
                               checked={isSelected}
                               onCheckedChange={() => handleItemToggle(item.id)}
-                              className="mt-1"
                             />
                             <div className="flex items-center space-x-2">
                               {getTypeIcon(item.type)}
-                              <span className="font-medium text-slate-900">{item.label}</span>
+                              <span className="font-medium text-slate-900 text-sm">{item.label}</span>
                             </div>
                           </div>
                           {getTypeBadge(item.type)}
-                        </div>
-
-                        <div className="ml-8 mt-2 space-y-1">
-                          <div className="text-sm text-slate-600">
-                            <span className="font-medium">Location:</span> {item.defaultLocation}
-                          </div>
-                          {item.useTableName && (
-                            <div className="text-sm text-blue-600">
-                              <Check className="inline h-3 w-3 mr-1" />
-                              Uses table name
-                            </div>
-                          )}
                         </div>
                       </div>
                     );

@@ -1,12 +1,11 @@
 import { useRef, useCallback, useState } from 'react';
-import { Zap, Gamepad, Monitor, Eraser, Download, Save } from 'lucide-react';
+import { Zap, Package, Eraser, Download, Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { OrganizationTemplate } from '@/types/organization';
-import { BUILTIN_TEMPLATE_CONFIGS, loadTemplate } from '@/lib/templates';
 import { readJsonFile, downloadJson } from '@/lib/file-utils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -14,35 +13,16 @@ interface QuickActionsProps {
   onLoadTemplate: (template: OrganizationTemplate) => void;
   onSaveTemplate: () => OrganizationTemplate;
   onClearInterface: () => void;
+  onShowPresetDialog: () => void;
 }
 
-export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearInterface }: QuickActionsProps) {
+export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearInterface, onShowPresetDialog }: QuickActionsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [templateName, setTemplateName] = useState('');
 
-  const handleLoadBuiltinTemplate = async (templateKey: string) => {
-    try {
-      const config = BUILTIN_TEMPLATE_CONFIGS[templateKey as keyof typeof BUILTIN_TEMPLATE_CONFIGS];
-      if (!config) {
-        throw new Error('Template not found');
-      }
-      
-      const template = await loadTemplate(config.key);
-      onLoadTemplate(template);
-      toast({
-        title: "Template loaded",
-        description: `${template.name} has been loaded successfully`
-      });
-    } catch (error) {
-      toast({
-        title: "Error loading template",
-        description: error instanceof Error ? error.message : "Failed to load template",
-        variant: "destructive"
-      });
-    }
-  };
+
 
   const handleLoadTemplate = useCallback(() => {
     fileInputRef.current?.click();
@@ -163,28 +143,16 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
             </div>
           </div>
 
-          {/* Built-in Templates */}
+          {/* Preset Items */}
           <div className="pt-3 border-t border-slate-200">
-            <h3 className="text-sm font-medium text-slate-700 mb-2">Built-in Templates</h3>
-            <div className="space-y-2">
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-3"
-                onClick={() => handleLoadBuiltinTemplate('pinballEmporium')}
-              >
-                <Gamepad className="text-blue-600 mr-2 h-4 w-4" />
-                <span className="text-sm font-medium">{BUILTIN_TEMPLATE_CONFIGS.pinballEmporium.name}</span>
-              </Button>
-              
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-3"
-                onClick={() => handleLoadBuiltinTemplate('pinupPopper')}
-              >
-                <Monitor className="text-green-600 mr-2 h-4 w-4" />
-                <span className="text-sm font-medium">{BUILTIN_TEMPLATE_CONFIGS.pinupPopper.name}</span>
-              </Button>
-            </div>
+            <Button
+              variant="outline"
+              className="w-full justify-start h-auto p-3"
+              onClick={onShowPresetDialog}
+            >
+              <Package className="text-purple-600 mr-2 h-4 w-4" />
+              <span className="text-sm font-medium">Add Preset Items</span>
+            </Button>
           </div>
 
           {/* Interface Actions */}

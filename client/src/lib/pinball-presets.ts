@@ -80,7 +80,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
     ]
   },
   {
-    name: "Pinball Emporium",
+    name: "Pinball Emporium Media",
     items: [
       {
         id: "pe-cover",
