@@ -91,4 +91,16 @@
   .border-slate-300 {
     border-color: hsl(210, 14%, 70%);
   }
+
+  /* Drag and drop styles */
+  .drag-over {
+    border-color: hsl(207, 90%, 54%) !important;
+    background-color: hsl(207, 90%, 97%) !important;
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(30, 144, 255, 0.15);
+  }
+
+  .drag-over .group-hover\:opacity-100 {
+    opacity: 1 !important;
+  }
 }

@@ -289,13 +289,21 @@ export default function OrganizationBuilder({
               
               <div className="flex items-center space-x-3 relative z-10">
                 {getItemIcon(item.type)}
-                <div>
-                  <div className="font-medium text-slate-700">
+                <div className="flex-1">
+                  <div className="font-medium text-slate-700 flex items-center">
                     {item.label || getItemTypeName(item.type)}
+                    {item.files && item.files.length > 0 && (
+                      <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        {item.files.length} file{item.files.length !== 1 ? 's' : ''}
+                      </span>
+                    )}
                   </div>
                   <div className="text-xs text-slate-500">
                     {item.location && `${item.location} • `}
                     {item.files?.length || 0} {item.type === 'folder' ? 'items' : 'files'}
+                    {!item.files || item.files.length === 0 && (
+                      <span className="text-amber-600"> • Click or drag files here</span>
+                    )}
                   </div>
                 </div>
               </div>
