@@ -28,8 +28,6 @@ export default function OrganizationBuilder({
   onTableNameChange
 }: OrganizationBuilderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dragOverItem, setDragOverItem] = useState<string | null>(null);
-  const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState<'single' | 'multiple' | 'folder' | null>(null);
@@ -50,49 +48,6 @@ export default function OrganizationBuilder({
     const fileArray = Array.from(files);
     onUpdateItem(itemId, { files: fileArray });
   };
-
-  const handleDragOver = useCallback((e: React.DragEvent, itemId: string) => {
-    e.preventDefault();
-    setDragOverItem(itemId);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent, itemId: string) => {
-    e.preventDefault();
-    // Only clear if leaving the entire card area
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX;
-    const y = e.clientY;
-    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
-      setDragOverItem(null);
-    }
-  }, []);
-
-  const handleDrop = useCallback((e: React.DragEvent, itemId: string) => {
-    e.preventDefault();
-    setDragOverItem(null);
-    
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFileSelect(itemId, files);
-    }
-  }, [handleFileSelect]);
-
-  const handleCardClick = useCallback((e: React.MouseEvent, itemId: string, item: OrganizationItem) => {
-    // Don't trigger file browser if clicking on action buttons
-    const target = e.target as HTMLElement;
-    if (target.closest('button')) return;
-    
-    const input = fileInputRefs.current[itemId];
-    if (input) {
-      input.click();
-    }
-  }, []);
-
-  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, itemId: string) => {
-    handleFileSelect(itemId, e.target.files);
-    // Reset the input to allow re-selecting the same files
-    e.target.value = '';
-  }, []);
 
   const openAddDialog = (type: 'single' | 'multiple' | 'folder') => {
     setDialogType(type);
@@ -246,73 +201,36 @@ export default function OrganizationBuilder({
         {/* Compact Item Cards */}
         <div className="space-y-3 mb-6">
           {items.slice(1).map((item) => (
-            <div key={item.id} className="relative">
-              {/* Hidden file input for each item */}
-              <input
-                ref={(el) => (fileInputRefs.current[item.id] = el)}
-                type="file"
-                multiple={item.type !== 'single'}
-                {...(item.type === 'folder' ? { webkitdirectory: '' } : {})}
-                onChange={(e) => handleFileInputChange(e, item.id)}
-                className="hidden"
-              />
-              
-              <div 
-                className={`
-                  flex items-center justify-between p-3 border rounded-lg bg-white transition-all cursor-pointer
-                  ${dragOverItem === item.id 
-                    ? 'border-primary bg-primary/5 shadow-md' 
-                    : 'border-slate-200 hover:bg-slate-50 hover:border-slate-300'
-                  }
-                  ${!item.files?.length ? 'border-dashed' : ''}
-                `}
-                onClick={(e) => handleCardClick(e, item.id, item)}
-                onDragOver={(e) => handleDragOver(e, item.id)}
-                onDragLeave={(e) => handleDragLeave(e, item.id)}
-                onDrop={(e) => handleDrop(e, item.id)}
-              >
-                <div className="flex items-center space-x-3">
-                  {getItemIcon(item.type)}
-                  <div>
-                    <div className="font-medium text-slate-700">
-                      {item.label || getItemTypeName(item.type)}
-                    </div>
-                    <div className="text-xs text-slate-500">
-                      {item.location && `${item.location} • `}
-                      {item.files?.length || 0} {item.type === 'folder' ? 'items' : 'files'}
-                      {!item.files?.length && (
-                        <span className="text-blue-500 ml-1">• Drop files or click to browse</span>
-                      )}
-                    </div>
+            <div key={item.id} className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-colors">
+              <div className="flex items-center space-x-3">
+                {getItemIcon(item.type)}
+                <div>
+                  <div className="font-medium text-slate-700">
+                    {item.label || getItemTypeName(item.type)}
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    {item.location && `${item.location} • `}
+                    {item.files?.length || 0} {item.type === 'folder' ? 'items' : 'files'}
                   </div>
                 </div>
-                <div className="flex items-center space-x-1">
-                  {!item.files?.length && (
-                    <Upload className="h-4 w-4 text-slate-400" />
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openEditDialog(item);
-                    }}
-                    className="h-8 w-8 p-0 text-slate-400 hover:text-slate-600"
-                  >
-                    <Edit3 className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onRemoveItem(item.id);
-                    }}
-                    className="h-8 w-8 p-0 text-red-400 hover:text-red-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => openEditDialog(item)}
+                  className="h-8 w-8 p-0 text-slate-400 hover:text-slate-600"
+                >
+                  <Edit3 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onRemoveItem(item.id)}
+                  className="h-8 w-8 p-0 text-red-400 hover:text-red-600"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           ))}
@@ -402,22 +320,9 @@ export default function OrganizationBuilder({
                   className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary/90"
                 />
                 {dialogData.files && (
-                  <div className="mt-3 space-y-2">
-                    <p className="text-sm text-slate-600">
-                      {dialogData.files.length} {dialogType === 'folder' ? 'items' : 'files'} selected:
-                    </p>
-                    <div className="max-h-32 overflow-y-auto bg-slate-50 rounded-md p-2">
-                      {Array.from(dialogData.files).map((file, index) => (
-                        <div key={index} className="text-xs text-slate-700 py-1 flex items-center">
-                          <File className="h-3 w-3 mr-2 text-slate-400" />
-                          <span className="truncate">{file.name}</span>
-                          <span className="ml-auto text-slate-500 text-xs">
-                            {(file.size / 1024).toFixed(1)} KB
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <p className="text-sm text-slate-600 mt-1">
+                    {dialogData.files.length} {dialogType === 'folder' ? 'items' : 'files'} selected
+                  </p>
                 )}
               </div>
 
