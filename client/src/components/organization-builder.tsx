@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3, Upload } from 'lucide-react';
+import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3, Upload, MousePointer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -42,12 +42,68 @@ export default function OrganizationBuilder({
     renameFolder: false
   });
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleFileSelect = (itemId: string, files: FileList | null) => {
     if (!files) return;
     
     const fileArray = Array.from(files);
     onUpdateItem(itemId, { files: fileArray });
   };
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = 'copy';
+  }, []);
+
+  const handleDragEnter = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const target = e.currentTarget as HTMLElement;
+    target.classList.add('drag-over');
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const target = e.currentTarget as HTMLElement;
+    target.classList.remove('drag-over');
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent, item: OrganizationItem) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const target = e.currentTarget as HTMLElement;
+    target.classList.remove('drag-over');
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      onUpdateItem(item.id, { files: fileArray });
+    }
+  }, [onUpdateItem]);
+
+  const handleCardClick = useCallback((item: OrganizationItem) => {
+    // Create a temporary file input for this specific item
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = item.type !== 'single';
+    if (item.type === 'folder') {
+      input.webkitdirectory = true;
+    }
+    
+    input.onchange = (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (files && files.length > 0) {
+        const fileArray = Array.from(files);
+        onUpdateItem(item.id, { files: fileArray });
+      }
+    };
+    
+    input.click();
+  }, [onUpdateItem]);
 
   const openAddDialog = (type: 'single' | 'multiple' | 'folder') => {
     setDialogType(type);
@@ -68,10 +124,19 @@ export default function OrganizationBuilder({
   const openEditDialog = (item: OrganizationItem) => {
     setDialogType(item.type);
     setEditingItem(item.id);
+    
+    // Convert existing files array back to FileList-like structure for the dialog
+    let fileList = null;
+    if (item.files && item.files.length > 0) {
+      const dt = new DataTransfer();
+      item.files.forEach(file => dt.items.add(file));
+      fileList = dt.files;
+    }
+    
     setDialogData({
       label: item.label,
       location: item.location,
-      files: null,
+      files: fileList,
       useTableName: item.options.useTableName || false,
       convertToPng: item.options.convertToPng || false,
       pngCompressionLevel: item.options.pngCompressionLevel || 'low',
@@ -201,8 +266,28 @@ export default function OrganizationBuilder({
         {/* Compact Item Cards */}
         <div className="space-y-3 mb-6">
           {items.slice(1).map((item) => (
-            <div key={item.id} className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-colors">
-              <div className="flex items-center space-x-3">
+            <div 
+              key={item.id} 
+              className="group relative flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all duration-200 cursor-pointer hover:border-blue-300 hover:shadow-sm"
+              onDragOver={handleDragOver}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, item)}
+              onClick={(e) => {
+                // Don't trigger file selection if clicking on buttons
+                if ((e.target as HTMLElement).closest('button')) return;
+                handleCardClick(item);
+              }}
+            >
+              {/* Drop zone overlay */}
+              <div className="absolute inset-0 bg-blue-50 border-2 border-dashed border-blue-300 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none flex items-center justify-center">
+                <div className="text-blue-600 text-sm font-medium flex items-center">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Drop files here or click to browse
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3 relative z-10">
                 {getItemIcon(item.type)}
                 <div>
                   <div className="font-medium text-slate-700">
@@ -214,11 +299,15 @@ export default function OrganizationBuilder({
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-1">
+              
+              <div className="flex items-center space-x-1 relative z-10">
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => openEditDialog(item)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openEditDialog(item);
+                  }}
                   className="h-8 w-8 p-0 text-slate-400 hover:text-slate-600"
                 >
                   <Edit3 className="h-4 w-4" />
@@ -226,7 +315,10 @@ export default function OrganizationBuilder({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onRemoveItem(item.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRemoveItem(item.id);
+                  }}
                   className="h-8 w-8 p-0 text-red-400 hover:text-red-600"
                 >
                   <Trash2 className="h-4 w-4" />
