@@ -121,12 +121,11 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
         <div className="space-y-3">
           {/* Template Management */}
           <div>
-            <h3 className="text-sm font-medium text-slate-700 mb-2">Template Management</h3>
             <div className="space-y-2">
               <Button 
                 variant="outline" 
                 onClick={handleLoadTemplate}
-                className="w-full h-10 text-sm"
+                className="w-full h-10 text-sm text-left"
               >
                 <Download className="mr-2 h-4 w-4" />
                 Load Template

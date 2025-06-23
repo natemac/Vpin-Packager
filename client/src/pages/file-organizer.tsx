@@ -36,6 +36,14 @@ export default function FileOrganizer() {
     setPendingTableFile(null);
   };
 
+  const handleShowPresetDialog = () => {
+    // Set a default table name if none exists
+    if (!organization.tableName) {
+      setPendingTableFile({ file: new File([], 'table'), name: 'My Table' });
+    }
+    setShowPresetDialog(true);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -82,6 +90,7 @@ export default function FileOrganizer() {
               onLoadTemplate={organization.loadTemplate}
               onSaveTemplate={organization.exportTemplate}
               onClearInterface={organization.clearAll}
+              onShowPresetDialog={handleShowPresetDialog}
             />
             
             <FileTreePreview 
@@ -97,7 +106,7 @@ export default function FileOrganizer() {
       <PresetItemsDialog
         open={showPresetDialog}
         onOpenChange={setShowPresetDialog}
-        tableName={pendingTableFile?.name || ''}
+        tableName={pendingTableFile?.name || organization.tableName || 'My Table'}
         onAddPresetItems={handleAddPresetItems}
       />
 
