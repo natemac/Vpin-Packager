@@ -392,7 +392,7 @@ export default function OrganizationBuilder({
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
             <Plus className="mr-2 h-4 w-4" />
-            + Manually Add Item
+            Manually Add Item
             <ChevronDown className="ml-2 h-4 w-4" />
           </Button>
 
