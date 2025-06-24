@@ -50,13 +50,13 @@ export default function OrganizationBuilder({
 
   const handleFileSelect = (itemId: string, files: FileList | null) => {
     if (!files) return;
-
+    
     // Limit file count to prevent browser crashes
-    const maxFiles = 50; // Reduced from 100 for better safety
-    const maxSize = 25 * 1024 * 1024; // 25MB per file (reduced from 50MB)
-
+    const maxFiles = 100;
+    const maxSize = 50 * 1024 * 1024; // 50MB per file
+    
     const fileArray = Array.from(files);
-
+    
     if (fileArray.length > maxFiles) {
       toast({
         title: "Too many files",
@@ -65,18 +65,18 @@ export default function OrganizationBuilder({
       });
       return;
     }
-
+    
     // Check individual file sizes
     const oversizedFiles = fileArray.filter(file => file.size > maxSize);
     if (oversizedFiles.length > 0) {
       toast({
         title: "Files too large",
-        description: `Maximum size per file: 25MB`,
+        description: `Maximum size per file: 50MB`,
         variant: "destructive"
       });
       return;
     }
-
+    
     onUpdateItem(itemId, { files: fileArray });
   };
 
@@ -103,79 +103,58 @@ export default function OrganizationBuilder({
   const handleDrop = useCallback((e: React.DragEvent, item: OrganizationItem) => {
     e.preventDefault();
     e.stopPropagation();
-
+    
     const target = e.currentTarget as HTMLElement;
     target.classList.remove('drag-over');
-
+    
     const files = e.dataTransfer.files;
     handleFileSelect(item.id, files);
   }, []);
 
-  // SAFE file input creation - removed webkitdirectory to prevent crashes
   const handleCardClick = useCallback((item: OrganizationItem) => {
-    try {
-      // Create a safe file input without webkitdirectory
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.multiple = item.type !== 'single';
-      input.style.display = 'none';
-
-      // Do NOT set webkitdirectory - this causes crashes on GitHub Pages
-      // For folder functionality, we'll use multiple file selection instead
-
-      input.onchange = (e) => {
-        try {
-          const files = (e.target as HTMLInputElement).files;
-          if (files) {
-            // For folder-type items, show a helpful message about file selection
-            if (item.type === 'folder' && files.length > 0) {
-              toast({
-                title: "Folder selection",
-                description: `Selected ${files.length} files. For best results, select all files from the same folder.`,
-              });
-            }
-            handleFileSelect(item.id, files);
-          }
-        } catch (error) {
-          console.error('Error handling file selection:', error);
-          toast({
-            title: "File selection error",
-            description: "Failed to process selected files",
-            variant: "destructive"
-          });
-        } finally {
-          // Clean up the temporary input
-          if (input.parentNode) {
-            document.body.removeChild(input);
-          }
-        }
-      };
-
-      input.onerror = () => {
+    // Create a temporary file input for this specific item
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = item.type !== 'single';
+    
+    // Remove webkitdirectory to prevent crashes - use multiple files instead
+    // if (item.type === 'folder') {
+    //   input.webkitdirectory = true;
+    // }
+    
+    input.onchange = (e) => {
+      try {
+        const files = (e.target as HTMLInputElement).files;
+        handleFileSelect(item.id, files);
+      } catch (error) {
+        console.error('Error handling file selection:', error);
         toast({
-          title: "Browser error",
-          description: "Unable to open file browser",
+          title: "File selection error",
+          description: "Failed to process selected files",
           variant: "destructive"
         });
-        // Clean up on error
+      } finally {
+        // Clean up the temporary input
         if (input.parentNode) {
           document.body.removeChild(input);
         }
-      };
-
-      // Safely append and trigger
+      }
+    };
+    
+    // Add error handling for the input creation
+    try {
+      input.style.display = 'none';
       document.body.appendChild(input);
       input.click();
-
     } catch (error) {
       console.error('Error creating file input:', error);
       toast({
         title: "Browser error",
-        description: "Unable to open file browser. Please try refreshing the page.",
+        description: "Unable to open file browser",
         variant: "destructive"
       });
     }
-  }, [toast]);
+  }, [onUpdateItem]);
 
   const openAddDialog = (type: 'single' | 'multiple' | 'folder') => {
     setDialogType(type);
@@ -196,10 +175,10 @@ export default function OrganizationBuilder({
   const openEditDialog = (item: OrganizationItem) => {
     setDialogType(item.type);
     setEditingItem(item.id);
-
+    
     // Don't try to recreate FileList - just show file count info
     let fileList = null;
-
+    
     setDialogData({
       label: item.label,
       location: item.location,
@@ -209,7 +188,7 @@ export default function OrganizationBuilder({
       pngCompressionLevel: item.options.pngCompressionLevel || 'low',
       renameFolder: item.options.renameFolder || false
     });
-
+    
     setDialogOpen(true);
   };
 
@@ -228,11 +207,11 @@ export default function OrganizationBuilder({
           renameFolder: dialogData.renameFolder
         }
       };
-
+      
       if (dialogData.files) {
         updates.files = Array.from(dialogData.files);
       }
-
+      
       onUpdateItem(editingItem, updates);
     } else {
       // Add new item with all data
@@ -247,10 +226,10 @@ export default function OrganizationBuilder({
         },
         files: dialogData.files ? Array.from(dialogData.files) : []
       };
-
+      
       onAddItem(dialogType, itemData);
     }
-
+    
     setDialogOpen(false);
   };
 
@@ -268,6 +247,8 @@ export default function OrganizationBuilder({
       renameFolder: false
     });
   };
+
+
 
   const getItemIcon = (type: string) => {
     switch (type) {
@@ -358,6 +339,8 @@ export default function OrganizationBuilder({
                 handleCardClick(item);
               }}
             >
+
+              
               <div className="flex items-center space-x-3 relative z-10">
                 {getItemIcon(item.type)}
                 <div className="flex-1">
@@ -372,16 +355,13 @@ export default function OrganizationBuilder({
                   <div className="text-xs text-slate-500">
                     {item.location && `${item.location} • `}
                     {item.files?.length || 0} {item.type === 'folder' ? 'items' : 'files'}
-                    {(!item.files || item.files.length === 0) && (
+                    {!item.files || item.files.length === 0 && (
                       <span className="text-amber-600"> • Click or drag files here</span>
-                    )}
-                    {item.type === 'folder' && (
-                      <span className="text-blue-600"> • Select multiple files from same folder</span>
                     )}
                   </div>
                 </div>
               </div>
-
+              
               <div className="flex items-center space-x-1 relative z-10">
                 <Button
                   variant="ghost"
@@ -454,7 +434,7 @@ export default function OrganizationBuilder({
                 onClick={() => openAddDialog('folder')}
               >
                 <Folder className="text-yellow-600 mr-3 h-4 w-4" />
-                <span className="font-medium">Folder (Select Files)</span>
+                <span className="font-medium">Folder</span>
               </button>
             </div>
           )}
@@ -468,7 +448,7 @@ export default function OrganizationBuilder({
                 {editingItem ? 'Edit' : 'Add'} {dialogType && getItemTypeName(dialogType)}
               </DialogTitle>
             </DialogHeader>
-
+            
             <div className="space-y-4">
               {/* Label */}
               <div>
@@ -498,10 +478,10 @@ export default function OrganizationBuilder({
                 />
               </div>
 
-              {/* File Selection - SAFE implementation */}
+              {/* File Selection */}
               <div>
                 <Label htmlFor="dialog-files">
-                  {dialogType === 'folder' ? 'Select Files from Folder' : 'Select Files'}
+                  {dialogType === 'folder' ? 'Select Folder' : 'Select Files'}
                 </Label>
                 <div className="flex items-center">
                   <input
@@ -523,14 +503,9 @@ export default function OrganizationBuilder({
                   <span className="text-sm text-slate-500">
                     {dialogData.files && dialogData.files.length > 0 
                       ? `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`
-                      : 'No files selected.'}
+                      : 'No file selected.'}
                   </span>
                 </div>
-                {dialogType === 'folder' && (
-                  <p className="text-xs text-amber-600 mt-1">
-                    Note: For folder organization, select all files from the same folder manually.
-                  </p>
-                )}
               </div>
 
               {/* Options */}
@@ -560,7 +535,7 @@ export default function OrganizationBuilder({
                       />
                       <Label htmlFor="dialog-convert-png">Convert images to PNG</Label>
                     </div>
-
+                    
                     {dialogData.convertToPng && (
                       <div className="ml-6">
                         <Label className="text-sm text-slate-600 mb-1 block">
