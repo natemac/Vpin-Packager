@@ -186,7 +186,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
   },
   {
     "name": "PinUp Popper Media",
-    "parentPath": "PinUPSystem/POPMedia/Visual Pinball X",
+    "parentPath": "PinUPSystem/POPMedia/VisualPinball",
     "items": [
       {
         "id": "pp-audio",
