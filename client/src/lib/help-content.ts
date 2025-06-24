@@ -8,7 +8,7 @@ export const HELP_CONTENT: Record<string, HelpContent> = {
   // File Upload Zone
   'file-upload': {
     title: 'Table Upload',
-    description: 'Drag and drop your pinball table file here, or click to browse to search for it. This will be the main table file that everything else gets organized around. If you don\'t want to include the table in the Package, you can uncheck the box in the Generate Package Card. You can also skip the upload all together and in the Item Collection Card use the **Add Preset Items** button to manually set a table name.'
+    description: 'Drag and drop your pinball table file here, or click to browse. This will be the main table file that everything else gets organized around.'
   },
 
   // Organization Builder
