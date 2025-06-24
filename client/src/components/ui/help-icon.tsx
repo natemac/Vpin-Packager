@@ -24,7 +24,7 @@ export function HelpIcon({ helpKey, className = "" }: HelpIconProps) {
       <HoverCardContent className="w-80">
         <div className="space-y-2">
           <h4 className="text-sm font-semibold">{helpContent.title}</h4>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
             {helpContent.description}
           </p>
         </div>

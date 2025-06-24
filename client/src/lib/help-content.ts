@@ -8,13 +8,13 @@ export const HELP_CONTENT: Record<string, HelpContent> = {
   // File Upload Zone
   'file-upload': {
     title: 'Table Upload',
-    description: 'Drag and drop your pinball table file here, or click to browse. This will be the main table file that everything else gets organized around.'
+    description: 'Drag and drop your pinball table file here, or click to browse to search for it.\nIf you don\'t want to include the table in the Package, you can uncheck the box in the Generate Package Card. \nYou can also skip the upload all together and in the Item Collection Card use the Add Preset Items button to manually set a table name.'
   },
 
   // Organization Builder
   'organization-builder': {
     title: 'Item Collection Structure',
-    description: 'Build your file organization structure by adding different types of items. You can organize ROMs, media files, backglasses, and other pinball assets into folders.'
+    description: 'Use the ADD PRESET ITEMS button to the right to add pre-built items. Each item will let you manually edit the location and how the item is named using the PENCIL edit button.\n\nYou can also use the MANUALLY ADD ITEM button to add additional items not in the presets. This can be single-file, multi-file or an entire folder.'
   },
 
   // Table Information Section
