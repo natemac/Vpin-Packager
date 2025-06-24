@@ -115,9 +115,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
           <Zap className="text-primary mr-2 h-5 w-5" />
           Item Tools
         </CardTitle>
-        <p className="text-sm text-slate-500 mt-1">
-          Save & Load item collection and file locations.
-        </p>
+        <p className="text-sm text-slate-500 mt-1">Load & Save item collections and file locations.</p>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
@@ -167,7 +165,6 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
           onChange={handleFileChange}
         />
       </CardContent>
-
       {/* Save Template Dialog */}
       <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
         <DialogContent>
