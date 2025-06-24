@@ -113,8 +113,11 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
       <CardHeader>
         <CardTitle className="flex items-center">
           <Zap className="text-primary mr-2 h-5 w-5" />
-          Quick Actions
+          Item Tools
         </CardTitle>
+        <p className="text-sm text-slate-500 mt-1">
+          Save & Load item collection and file locations.
+        </p>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
