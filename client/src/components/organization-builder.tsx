@@ -51,32 +51,7 @@ export default function OrganizationBuilder({
   const handleFileSelect = (itemId: string, files: FileList | null) => {
     if (!files) return;
 
-    // Limit file count to prevent browser crashes
-    const maxFiles = 50; // Reduced from 100 for better safety
-    const maxSize = 25 * 1024 * 1024; // 25MB per file (reduced from 50MB)
-
     const fileArray = Array.from(files);
-
-    if (fileArray.length > maxFiles) {
-      toast({
-        title: "Too many files",
-        description: `Maximum allowed: ${maxFiles} files`,
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Check individual file sizes
-    const oversizedFiles = fileArray.filter(file => file.size > maxSize);
-    if (oversizedFiles.length > 0) {
-      toast({
-        title: "Files too large",
-        description: `Maximum size per file: 25MB`,
-        variant: "destructive"
-      });
-      return;
-    }
-
     onUpdateItem(itemId, { files: fileArray });
   };
 
