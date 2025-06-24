@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { HelpIcon } from "@/components/ui/help-icon";
 import { PINBALL_PRESETS, PresetItem, PresetCategory, DEFAULT_TABLE_LOCATION } from "@/lib/pinball-presets";
 import { OrganizationItem } from "@/types/organization";
 import { nanoid } from "nanoid";
@@ -158,6 +159,7 @@ export default function PresetItemsDialog({
           <DialogTitle className="flex items-center">
             <Package className="mr-2 h-5 w-5 text-primary" />
             Add Preset Items for "{tableName}"
+            <HelpIcon helpKey="preset-items" className="ml-2" />
           </DialogTitle>
           <DialogDescription>(Optional) Add Pre-configured Items below.</DialogDescription>
         </DialogHeader>

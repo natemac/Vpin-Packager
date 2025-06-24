@@ -2,6 +2,7 @@ import { useRef, useCallback } from 'react';
 import { Download, Save, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { HelpIcon } from '@/components/ui/help-icon';
 import { OrganizationTemplate } from '@/types/organization';
 import { readJsonFile, downloadJson } from '@/lib/file-utils';
 import { useToast } from '@/hooks/use-toast';
@@ -73,6 +74,7 @@ export default function TemplateManager({ onLoadTemplate, onSaveTemplate }: Temp
         <CardTitle className="flex items-center">
           <FileText className="text-primary mr-2 h-5 w-5" />
           Template Management
+          <HelpIcon helpKey="template-manager" className="ml-2" />
         </CardTitle>
       </CardHeader>
       <CardContent>

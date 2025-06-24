@@ -115,6 +115,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
         <CardTitle className="flex items-center">
           <Zap className="text-primary mr-2 h-5 w-5" />
           Item Tools
+          <HelpIcon helpKey="quick-actions" className="ml-2" />
         </CardTitle>
         <p className="text-sm text-slate-500 mt-1">Load & Save item collections and file locations.</p>
       </CardHeader>
