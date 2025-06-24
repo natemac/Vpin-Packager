@@ -66,7 +66,7 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
       <CardHeader>
         <CardTitle className="flex items-center">
           <CloudUpload className="text-primary mr-2 h-5 w-5" />
-          File Upload
+          Table Upload
         </CardTitle>
       </CardHeader>
       <CardContent>
