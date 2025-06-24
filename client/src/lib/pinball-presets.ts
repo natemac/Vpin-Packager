@@ -1,3 +1,5 @@
+export const APP_VERSION = "1.0.0";
+
 export interface PresetItem {
   id: string;
   label: string;
