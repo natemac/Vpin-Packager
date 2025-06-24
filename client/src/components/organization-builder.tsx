@@ -366,9 +366,7 @@ export default function OrganizationBuilder({
                     {(!item.files || item.files.length === 0) && (
                       <span className="text-amber-600"> • Click or drag files here</span>
                     )}
-                    {item.type === 'folder' && (
-                      <span className="text-blue-600"> • Select multiple files from same folder</span>
-                    )}
+                    }
                   </div>
                 </div>
               </div>
