@@ -517,11 +517,24 @@ export default function OrganizationBuilder({
                   >
                     {dialogType === 'folder' ? 'Select Folder...' : 'Browse...'}
                   </Button>
-                  <span className="text-sm text-slate-500">
-                    {dialogData.files && dialogData.files.length > 0 
-                      ? `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`
-                      : dialogType === 'folder' ? 'No folder selected.' : 'No files selected.'}
-                  </span>
+                  <div className="text-sm text-slate-500">
+                    {dialogData.files && dialogData.files.length > 0 ? (
+                      <div>
+                        <div className="mb-1">
+                          {dialogData.files.length} file{dialogData.files.length !== 1 ? 's' : ''} selected:
+                        </div>
+                        <div className="max-h-20 overflow-y-auto text-xs">
+                          {Array.from(dialogData.files).map((file, index) => (
+                            <div key={index} className="truncate text-blue-600">
+                              {file.name}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      dialogType === 'folder' ? 'No folder selected.' : 'No files selected.'
+                    )}
+                  </div>
                 </div>
                 {dialogType === 'folder' && (
                   <p className="text-xs text-blue-600 mt-1">

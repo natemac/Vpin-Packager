@@ -94,6 +94,8 @@ This is a client-side file organization and packaging tool specifically designed
 - June 23, 2025: Created comprehensive README.md explaining app functionality and features
 - June 24, 2025: Fixed browser crashes from unsafe webkitdirectory usage and DataTransfer constructor
 - June 24, 2025: Removed all database dependencies and server-side code - app is now fully client-side static
+- June 24, 2025: Fixed syntax error in organization-builder.tsx and restored application functionality
+- June 24, 2025: Enhanced edit dialog to display actual file names when files are added via drag and drop
 
 ## User Preferences
 
