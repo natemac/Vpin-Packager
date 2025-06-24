@@ -185,64 +185,128 @@ export const PINBALL_PRESETS: PresetCategory[] = [
     ]
   },
   {
-    name: "Pinup Popper Media",
-    parentPath: "collections/Visual Pinball X/medium_artwork/",
-    items: [
+    "name": "PinUp Popper Media",
+    "parentPath": "PinUPSystem/POPMedia/Visual Pinball X",
+    "items": [
       {
-        id: "pp-wheel",
-        label: "Wheel",
-        type: "single",
-        defaultLocation: "wheel/",
-        useTableName: true,
-        category: "Pinup Popper Media"
+        "id": "pp-audio",
+        "label": "Audio",
+        "type": "single",
+        "defaultLocation": "Audio/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
       },
       {
-        id: "pp-audio",
-        label: "Audio",
-        type: "single",
-        defaultLocation: "audio/",
-        useTableName: true,
-        category: "Pinup Popper Media"
+        "id": "pp-audiolaunch",
+        "label": "AudioLaunch",
+        "type": "single",
+        "defaultLocation": "AudioLaunch/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
       },
       {
-        id: "pp-audiolaunchshort",
-        label: "Audio Launch Short",
-        type: "single",
-        defaultLocation: "audio launch short/",
-        useTableName: true,
-        category: "Pinup Popper Media"
+        "id": "pp-backglass",
+        "label": "BackGlass",
+        "type": "single",
+        "defaultLocation": "BackGlass/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
       },
       {
-        id: "pp-audiolaunch",
-        label: "Audio Launch",
-        type: "single",
-        defaultLocation: "audio launch/",
-        useTableName: true,
-        category: "Pinup Popper Media"
+        "id": "pp-dmd",
+        "label": "DMD",
+        "type": "single",
+        "defaultLocation": "DMD/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
       },
       {
-        id: "pp-backglass",
-        label: "Backglass",
-        type: "single",
-        defaultLocation: "backglass/",
-        useTableName: true,
-        category: "Pinup Popper Media"
+        "id": "pp-gamehelp",
+        "label": "GameHelp",
+        "type": "single",
+        "defaultLocation": "GameHelp/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
       },
       {
-        id: "pp-loadingsignshort",
-        label: "Loading Sign Short",
-        type: "single",
-        defaultLocation: "loading sign short/",
-        useTableName: true,
-        category: "Pinup Popper Media"
+        "id": "pp-gameinfo",
+        "label": "GameInfo",
+        "type": "single",
+        "defaultLocation": "GameInfo/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
       },
       {
-        id: "pp-loadingsign",
-        label: "Loading Sign",
-        type: "single",
-        defaultLocation: "loading sign/",
-        useTableName: true,
-        category: "Pinup Popper Media"
+        "id": "pp-gameselect",
+        "label": "GameSelect",
+        "type": "single",
+        "defaultLocation": "GameSelect/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-loading",
+        "label": "Loading",
+        "type": "single",
+        "defaultLocation": "Loading/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-menu",
+        "label": "Menu",
+        "type": "single",
+        "defaultLocation": "Menu/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-other1",
+        "label": "Other1",
+        "type": "single",
+        "defaultLocation": "Other1/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-other2",
+        "label": "Other2",
+        "type": "single",
+        "defaultLocation": "Other2/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-playfield",
+        "label": "PlayField",
+        "type": "single",
+        "defaultLocation": "PlayField/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-system",
+        "label": "System",
+        "type": "single",
+        "defaultLocation": "System/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-topper",
+        "label": "Topper",
+        "type": "single",
+        "defaultLocation": "Topper/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
+      },
+      {
+        "id": "pp-wheel",
+        "label": "Wheel",
+        "type": "single",
+        "defaultLocation": "Wheel/",
+        "useTableName": true,
+        "category": "PinUp Popper Media"
       }
     ]
   },
