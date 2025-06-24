@@ -371,6 +371,18 @@ export default function OrganizationBuilder({
                   <div className="text-xs text-slate-500">
                     {item.location && `${item.location} • `}
                     {item.files?.length || 0} {item.type === 'folder' ? 'items' : 'files'}
+                    {item.files && item.files.length > 0 && (
+                      <span className="text-blue-600">
+                        {item.type === 'single' && item.files[0] 
+                          ? ` • ${item.files[0].name}`
+                          : item.type === 'folder' && item.files[0]
+                          ? ` • ${item.files[0].webkitRelativePath?.split('/')[0] || item.files[0].name}`
+                          : item.type === 'multiple'
+                          ? ' • multiple files'
+                          : ''
+                        }
+                      </span>
+                    )}
                     {(!item.files || item.files.length === 0) && (
                       <span className="text-amber-600"> • Click or drag files here</span>
                     )}
