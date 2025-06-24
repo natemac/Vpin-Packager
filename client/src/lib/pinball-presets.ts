@@ -241,6 +241,92 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         defaultLocation: "loading sign/",
         useTableName: true,
         category: "Pinup Popper Media"
+      }
+    ]
+  },
+  {
+    name: "PinballX Media",
+    parentPath: "Media/Visual Pinball/",
+    items: [
+      {
+        id: "px-backglass",
+        label: "Backglass",
+        type: "single",
+        defaultLocation: "Backglass Image/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-dmd",
+        label: "DMD",
+        type: "single",
+        defaultLocation: "DMD Image/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-fulldmd",
+        label: "FullDMD",
+        type: "single",
+        defaultLocation: "fullDMD Video/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-launchaudio",
+        label: "Launch Audio",
+        type: "single",
+        defaultLocation: "Launch Audio/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-realdmdcolor",
+        label: "Real DMD Color",
+        type: "single",
+        defaultLocation: "Real DMD Color Images/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-realdmd",
+        label: "Real DMD",
+        type: "single",
+        defaultLocation: "Real DMD Images/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-tableaudio",
+        label: "Table Audio",
+        type: "single",
+        defaultLocation: "Table Audio/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-table",
+        label: "Table",
+        type: "single",
+        defaultLocation: "Table Images/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-topper",
+        label: "Topper",
+        type: "single",
+        defaultLocation: "Topper Images/",
+        useTableName: true,
+        category: "PinballX Media"
+      },
+      {
+        id: "px-wheel",
+        label: "Wheel",
+        type: "single",
+        defaultLocation: "Wheel Image/",
+        useTableName: true,
+        category: "PinballX Media"
       },
     ]
   }
