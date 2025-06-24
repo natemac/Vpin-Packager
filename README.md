@@ -2,11 +2,11 @@
 
 > **🌐 Try it now: [https://natemac.github.io/Vpin-Packager/](https://natemac.github.io/Vpin-Packager/)**
 
-A powerful web-based tool for organizing and packaging Virtual Pinball table files with their associated assets. This application helps Virtual Pinball enthusiasts create properly structured file packages for easy distribution and installation across different platforms.
+A web-based tool for organizing and packaging Virtual Pinball table files with their associated assets. This application helps users rename and organize files into a ZIP package to extrat and placed in the propper folder stucture.
 
 ## 🎯 What It Does
 
-The Virtual Pinball File Organizer streamlines the process of packaging table files with all their related assets (ROMs, backglasses, media files, etc.) into organized ZIP packages. Whether you're sharing tables with friends or preparing files for different Virtual Pinball platforms, this tool ensures everything is properly organized and ready to use.
+This tool can rename and restructure files so they are in the correct location for easy deployment. All files are kept locally and not uploaded to any server or site.
 
 ## ✨ Key Features
 
@@ -16,10 +16,14 @@ The Virtual Pinball File Organizer streamlines the process of packaging table fi
 - **File Type Detection**: Automatically recognizes Virtual Pinball file types
 - **Bulk File Management**: Handle multiple files and folders efficiently
 
-### Platform Templates
-- **Pinball Emporium**: Pre-configured templates for Pinball Emporium setups
-- **Pinup Popper**: Ready-made organization for Pinup Popper systems
-- **Custom Templates**: Save and reuse your own organization patterns
+### Platform Preset Items
+- **Manual Add Items**: You can manually add single-files, multiple-files & folders.
+- **Visual Pinball X**: directb2s backglass, AltColor, Alt Sound, FlexDMD, Roms
+- **Future Pinball**: Library Files & BAM CFGs
+- **PupPack**: PupPack folders
+- **Pinball FX//M/FX3**: Backglass Images
+- **Pinball Emporium**: Pinball Emporium Media
+- **Pinup Popper**: Pinup Popper Media
 
 ### Advanced Features
 - **Real-time Preview**: See your final package structure before generating
