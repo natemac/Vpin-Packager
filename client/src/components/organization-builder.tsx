@@ -366,7 +366,6 @@ export default function OrganizationBuilder({
                     {(!item.files || item.files.length === 0) && (
                       <span className="text-amber-600"> • Click or drag files here</span>
                     )}
-                    }
                   </div>
                 </div>
               </div>
