@@ -269,6 +269,7 @@ export default function OrganizationBuilder({
           <div className="flex items-center">
             <Plus className="text-primary mr-2 h-5 w-5" />
             Item Collection Structure
+            <HelpIcon helpKey="organization-builder" className="ml-2" />
           </div>
           {onShowPresetDialog && (
             <Button
@@ -287,7 +288,10 @@ export default function OrganizationBuilder({
         {/* Table Information Section */}
         {items.length > 0 && (
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 className="text-sm font-medium text-blue-900 mb-3">Table Information</h3>
+            <h3 className="text-sm font-medium text-blue-900 mb-3 flex items-center">
+              Table Information
+              <HelpIcon helpKey="table-info" className="ml-2" />
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="table-name" className="text-sm font-medium text-blue-800">
@@ -338,6 +342,7 @@ export default function OrganizationBuilder({
                 <div className="flex-1">
                   <div className="font-medium text-slate-700 flex items-center">
                     {item.label || getItemTypeName(item.type)}
+                    <HelpIcon helpKey={`item-${item.type}`} className="ml-2" />
                     {item.files && item.files.length > 0 && (
                       <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                         {item.files.length} file{item.files.length !== 1 ? 's' : ''}
