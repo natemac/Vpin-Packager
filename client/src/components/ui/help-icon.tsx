@@ -11,7 +11,7 @@ export function HelpIcon({ helpKey, className = "" }: HelpIconProps) {
   const helpContent = getHelpContent(helpKey);
 
   return (
-    <HoverCard>
+    <HoverCard openDelay={150} closeDelay={100}>
       <HoverCardTrigger asChild>
         <button
           type="button"
