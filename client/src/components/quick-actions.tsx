@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { HelpIcon } from '@/components/ui/help-icon';
 import { OrganizationTemplate } from '@/types/organization';
 import { readJsonFile, downloadJson } from '@/lib/file-utils';
 import { useToast } from '@/hooks/use-toast';

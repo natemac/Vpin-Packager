@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { HelpIcon } from '@/components/ui/help-icon';
 import { OrganizationItem } from '@/types/organization';
 import { generateZipFromOrganization, calculatePackageSummary } from '@/lib/zip-generator';
 import { formatFileSize, downloadBlob } from '@/lib/file-utils';
@@ -81,6 +82,7 @@ export default function PackageGenerator({
         <CardTitle className="flex items-center">
           <Archive className="text-primary mr-2 h-5 w-5" />
           Generate Package
+          <HelpIcon helpKey="package-generator" className="ml-2" />
         </CardTitle>
       </CardHeader>
       <CardContent>

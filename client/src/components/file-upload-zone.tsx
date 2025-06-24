@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { CloudUpload, FileText, FolderOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { HelpIcon } from '@/components/ui/help-icon';
 import { getFileNameWithoutExtension, isVpxFile } from '@/lib/file-utils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -67,6 +68,7 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
         <CardTitle className="flex items-center">
           <CloudUpload className="text-primary mr-2 h-5 w-5" />
           Table Upload
+          <HelpIcon helpKey="file-upload" className="ml-2" />
         </CardTitle>
       </CardHeader>
       <CardContent>

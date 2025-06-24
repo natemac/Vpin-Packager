@@ -1,5 +1,6 @@
 import { TreePine, FolderOpen, Folder, File, Image } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { HelpIcon } from '@/components/ui/help-icon';
 import { OrganizationItem, FileTreeNode } from '@/types/organization';
 import { generateFileTree } from '@/lib/zip-generator';
 import { isImageFile } from '@/lib/file-utils';
@@ -80,6 +81,7 @@ export default function FileTreePreview({ items, tableName, includeTable = true 
         <CardTitle className="flex items-center">
           <TreePine className="text-primary mr-2 h-5 w-5" />
           File Structure Preview
+          <HelpIcon helpKey="file-tree-preview" className="ml-2" />
         </CardTitle>
       </CardHeader>
       <CardContent>
