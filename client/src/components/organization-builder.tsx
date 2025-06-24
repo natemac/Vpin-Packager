@@ -87,27 +87,37 @@ export default function OrganizationBuilder({
     handleFileSelect(item.id, files);
   }, []);
 
-  // SAFE file input creation - removed webkitdirectory to prevent crashes
+  // File input creation with folder support
   const handleCardClick = useCallback((item: OrganizationItem) => {
     try {
-      // Create a safe file input without webkitdirectory
+      // Create file input based on item type
       const input = document.createElement('input');
       input.type = 'file';
       input.multiple = item.type !== 'single';
       input.style.display = 'none';
 
-      // Do NOT set webkitdirectory - this causes crashes on GitHub Pages
-      // For folder functionality, we'll use multiple file selection instead
+      // For folder type, enable directory selection if supported
+      if (item.type === 'folder') {
+        try {
+          // Use webkitdirectory for folder selection
+          (input as any).webkitdirectory = true;
+        } catch (error) {
+          console.warn('webkitdirectory not supported, falling back to multiple selection');
+        }
+      }
 
       input.onchange = (e) => {
         try {
           const files = (e.target as HTMLInputElement).files;
           if (files) {
-            // For folder-type items, show a helpful message about file selection
+            // For folder-type items, show appropriate message
             if (item.type === 'folder' && files.length > 0) {
+              const hasDirectorySupport = (input as any).webkitdirectory;
               toast({
                 title: "Folder selection",
-                description: `Selected ${files.length} files. For best results, select all files from the same folder.`,
+                description: hasDirectorySupport 
+                  ? `Selected folder with ${files.length} files including subfolders.`
+                  : `Selected ${files.length} files. For best results, select all files from the same folder.`,
               });
             }
             handleFileSelect(item.id, files);
@@ -435,7 +445,7 @@ export default function OrganizationBuilder({
                 onClick={() => openAddDialog('folder')}
               >
                 <Folder className="text-yellow-600 mr-3 h-4 w-4" />
-                <span className="font-medium">Folder (Select Files)</span>
+                <span className="font-medium">Folder</span>
               </button>
             </div>
           )}
@@ -479,10 +489,10 @@ export default function OrganizationBuilder({
                 />
               </div>
 
-              {/* File Selection - SAFE implementation */}
+              {/* File Selection */}
               <div>
                 <Label htmlFor="dialog-files">
-                  {dialogType === 'folder' ? 'Select Files from Folder' : 'Select Files'}
+                  {dialogType === 'folder' ? 'Select Folder' : 'Select Files'}
                 </Label>
                 <div className="flex items-center">
                   <input
@@ -490,6 +500,8 @@ export default function OrganizationBuilder({
                     id="dialog-files"
                     type="file"
                     multiple={dialogType !== 'single'}
+                    webkitdirectory={dialogType === 'folder'}
+                    directory={dialogType === 'folder' ? "" : undefined}
                     onChange={(e) => setDialogData(prev => ({ ...prev, files: e.target.files }))}
                     className="hidden"
                   />
@@ -499,17 +511,17 @@ export default function OrganizationBuilder({
                     onClick={() => fileInputRef.current?.click()}
                     className="mr-3"
                   >
-                    Browse...
+                    {dialogType === 'folder' ? 'Select Folder...' : 'Browse...'}
                   </Button>
                   <span className="text-sm text-slate-500">
                     {dialogData.files && dialogData.files.length > 0 
                       ? `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`
-                      : 'No files selected.'}
+                      : dialogType === 'folder' ? 'No folder selected.' : 'No files selected.'}
                   </span>
                 </div>
                 {dialogType === 'folder' && (
-                  <p className="text-xs text-amber-600 mt-1">
-                    Note: For folder organization, select all files from the same folder manually.
+                  <p className="text-xs text-blue-600 mt-1">
+                    This will select an entire folder including all sub-folders and files.
                   </p>
                 )}
               </div>
