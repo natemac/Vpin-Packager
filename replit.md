@@ -56,12 +56,12 @@ This is a client-side file organization and packaging tool specifically designed
 - **UI Components**: Radix UI primitives, Lucide React icons
 - **File Processing**: JSZip for archive creation
 - **Forms**: React Hook Form with Zod validation
-- **State Management**: TanStack React Query for server state
+- **State Management**: React hooks with custom organization hook
 - **Styling**: Tailwind CSS, class-variance-authority
 
 ### Development Tools
 - **Build**: Vite with React plugin and runtime error overlay
-- **Database**: Drizzle ORM with PostgreSQL adapter
+
 - **TypeScript**: Full TypeScript support with path mapping
 - **Development**: Hot reload, error boundaries, and debugging tools
 
@@ -76,7 +76,7 @@ This is a client-side file organization and packaging tool specifically designed
 - **Client Build**: Vite builds React application to `dist/public`
 - **Server Build**: esbuild bundles server code to `dist/index.js`
 - **Static Assets**: Served from build output directory
-- **Database**: PostgreSQL with connection pooling via Neon
+
 
 ### Platform Configuration
 - **Replit Modules**: Node.js 20 and web server (PostgreSQL removed)
@@ -92,6 +92,8 @@ This is a client-side file organization and packaging tool specifically designed
 - June 23, 2025: Successfully deployed to GitHub Pages with production Vite config and correct base path
 - June 23, 2025: Fixed router base path to work in both Replit development and GitHub Pages production
 - June 23, 2025: Created comprehensive README.md explaining app functionality and features
+- June 24, 2025: Fixed browser crashes from unsafe webkitdirectory usage and DataTransfer constructor
+- June 24, 2025: Removed all database dependencies and server-side code - app is now fully client-side static
 
 ## User Preferences
 
