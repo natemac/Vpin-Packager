@@ -83,10 +83,12 @@ export default function FileTreePreview({ items, tableName, includeTable = true 
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {fileTree ? (
+        {fileTree && fileTree.children ? (
           <>
             <div className="space-y-1">
-              <TreeNode node={fileTree} />
+              {fileTree.children.map((child, index) => (
+                <TreeNode key={`${child.path}-${index}`} node={child} depth={0} />
+              ))}
             </div>
             
             <div className="mt-4 pt-4 border-t border-slate-200">

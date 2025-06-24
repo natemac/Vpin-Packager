@@ -11,21 +11,15 @@ export async function generateZipFromOrganization(
   let processedItems = 0;
   const totalItems = items.reduce((sum, item) => sum + (item.files?.length || 0), 0);
 
-  // Create the main folder using table name
-  const mainFolder = zip.folder(tableName);
-  if (!mainFolder) {
-    throw new Error('Failed to create main folder');
-  }
-
   for (const item of items) {
     if (!item.files || item.files.length === 0) continue;
 
-    // Determine the target folder
-    let targetFolder = mainFolder;
+    // Determine the target folder - start directly from the zip root
+    let targetFolder = zip;
     if (item.location) {
       const folderPath = item.location.replace(/\/$/, ''); // Remove trailing slash
       if (folderPath) {
-        const newFolder = mainFolder.folder(folderPath);
+        const newFolder = zip.folder(folderPath);
         if (!newFolder) {
           throw new Error(`Failed to create folder: ${folderPath}`);
         }
@@ -93,7 +87,7 @@ export async function generateZipFromOrganization(
 
 export function generateFileTree(items: OrganizationItem[], tableName: string): FileTreeNode {
   const root: FileTreeNode = {
-    name: tableName,
+    name: 'root',
     type: 'folder',
     path: '',
     children: []

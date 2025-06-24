@@ -56,7 +56,7 @@ export default function PackageGenerator({
         (progressPercent) => setProgress(progressPercent)
       );
 
-      const fileName = `${tableName.replace(/[^a-z0-9]/gi, '_')}_package.zip`;
+      const fileName = `${tableName}.zip`;
       downloadBlob(zipBlob, fileName);
 
       toast({
