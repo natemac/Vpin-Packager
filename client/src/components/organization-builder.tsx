@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { HelpIcon } from '@/components/ui/help-icon';
 import { OrganizationItem } from '@/types/organization';
 import { isImageFile } from '@/lib/file-utils';
@@ -458,6 +458,14 @@ export default function OrganizationBuilder({
               <DialogTitle>
                 {editingItem ? 'Edit' : 'Add'} {dialogType && getItemTypeName(dialogType)}
               </DialogTitle>
+              <DialogDescription>
+                {dialogType === 'folder' 
+                  ? 'Configure a folder item that will contain multiple files and subfolders.'
+                  : dialogType === 'multiple'
+                  ? 'Configure a multiple files item for related files.'
+                  : 'Configure a single file item.'
+                }
+              </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">
@@ -500,8 +508,7 @@ export default function OrganizationBuilder({
                     id="dialog-files"
                     type="file"
                     multiple={dialogType !== 'single'}
-                    webkitdirectory={dialogType === 'folder'}
-                    directory={dialogType === 'folder' ? "" : undefined}
+                    {...(dialogType === 'folder' ? { webkitdirectory: '' } : {})}
                     onChange={(e) => setDialogData(prev => ({ ...prev, files: e.target.files }))}
                     className="hidden"
                   />
