@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Plus, Trash2, File, Files, Folder, ChevronDown, Edit3, Upload, MousePointer, Package } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -30,6 +31,7 @@ export default function OrganizationBuilder({
   onShowPresetDialog
 }: OrganizationBuilderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { toast } = useToast();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState<'single' | 'multiple' | 'folder' | null>(null);
@@ -49,7 +51,32 @@ export default function OrganizationBuilder({
   const handleFileSelect = (itemId: string, files: FileList | null) => {
     if (!files) return;
     
+    // Limit file count to prevent browser crashes
+    const maxFiles = 100;
+    const maxSize = 50 * 1024 * 1024; // 50MB per file
+    
     const fileArray = Array.from(files);
+    
+    if (fileArray.length > maxFiles) {
+      toast({
+        title: "Too many files",
+        description: `Maximum allowed: ${maxFiles} files`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Check individual file sizes
+    const oversizedFiles = fileArray.filter(file => file.size > maxSize);
+    if (oversizedFiles.length > 0) {
+      toast({
+        title: "Files too large",
+        description: `Maximum size per file: 50MB`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
     onUpdateItem(itemId, { files: fileArray });
   };
 
@@ -81,30 +108,52 @@ export default function OrganizationBuilder({
     target.classList.remove('drag-over');
     
     const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      const fileArray = Array.from(files);
-      onUpdateItem(item.id, { files: fileArray });
-    }
-  }, [onUpdateItem]);
+    handleFileSelect(item.id, files);
+  }, []);
 
   const handleCardClick = useCallback((item: OrganizationItem) => {
     // Create a temporary file input for this specific item
     const input = document.createElement('input');
     input.type = 'file';
     input.multiple = item.type !== 'single';
-    if (item.type === 'folder') {
-      input.webkitdirectory = true;
-    }
+    
+    // Remove webkitdirectory to prevent crashes - use multiple files instead
+    // if (item.type === 'folder') {
+    //   input.webkitdirectory = true;
+    // }
     
     input.onchange = (e) => {
-      const files = (e.target as HTMLInputElement).files;
-      if (files && files.length > 0) {
-        const fileArray = Array.from(files);
-        onUpdateItem(item.id, { files: fileArray });
+      try {
+        const files = (e.target as HTMLInputElement).files;
+        handleFileSelect(item.id, files);
+      } catch (error) {
+        console.error('Error handling file selection:', error);
+        toast({
+          title: "File selection error",
+          description: "Failed to process selected files",
+          variant: "destructive"
+        });
+      } finally {
+        // Clean up the temporary input
+        if (input.parentNode) {
+          document.body.removeChild(input);
+        }
       }
     };
     
-    input.click();
+    // Add error handling for the input creation
+    try {
+      input.style.display = 'none';
+      document.body.appendChild(input);
+      input.click();
+    } catch (error) {
+      console.error('Error creating file input:', error);
+      toast({
+        title: "Browser error",
+        description: "Unable to open file browser",
+        variant: "destructive"
+      });
+    }
   }, [onUpdateItem]);
 
   const openAddDialog = (type: 'single' | 'multiple' | 'folder') => {
