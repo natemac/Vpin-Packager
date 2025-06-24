@@ -176,13 +176,8 @@ export default function OrganizationBuilder({
     setDialogType(item.type);
     setEditingItem(item.id);
     
-    // Convert existing files array back to FileList-like structure for the dialog
+    // Don't try to recreate FileList - just show file count info
     let fileList = null;
-    if (item.files && item.files.length > 0) {
-      const dt = new DataTransfer();
-      item.files.forEach(file => dt.items.add(file));
-      fileList = dt.files;
-    }
     
     setDialogData({
       label: item.label,
@@ -494,7 +489,6 @@ export default function OrganizationBuilder({
                     id="dialog-files"
                     type="file"
                     multiple={dialogType !== 'single'}
-                    {...(dialogType === 'folder' ? { webkitdirectory: '' } : {})}
                     onChange={(e) => setDialogData(prev => ({ ...prev, files: e.target.files }))}
                     className="hidden"
                   />
@@ -508,16 +502,7 @@ export default function OrganizationBuilder({
                   </Button>
                   <span className="text-sm text-slate-500">
                     {dialogData.files && dialogData.files.length > 0 
-                      ? (dialogType === 'folder' 
-                          ? (() => {
-                              const firstFile = Array.from(dialogData.files)[0];
-                              if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
-                                const folderName = firstFile.webkitRelativePath.split('/')[0];
-                                return `1 folder selected: ${folderName}`;
-                              }
-                              return `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`;
-                            })()
-                          : `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected: ${Array.from(dialogData.files).map(f => f.name).join(', ')}`)
+                      ? `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`
                       : 'No file selected.'}
                   </span>
                 </div>
@@ -588,13 +573,6 @@ export default function OrganizationBuilder({
                           let newLabel = prev.label;
                           if (!newChecked) {
                             newLabel = '';
-                          } else if (prev.files && prev.files.length > 0) {
-                            // Try to get original folder name as starting point
-                            const firstFile = Array.from(prev.files)[0];
-                            if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
-                              const folderName = firstFile.webkitRelativePath.split('/')[0];
-                              newLabel = folderName;
-                            }
                           }
                           return { ...prev, renameFolder: newChecked, label: newLabel };
                         });

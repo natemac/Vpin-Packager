@@ -18,26 +18,23 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
   const handleFileSelect = useCallback((files: FileList | null) => {
     if (!files || files.length === 0) return;
 
-    const file = files[0];
-    
-    // Add file size check (100MB limit)
-    const maxSize = 100 * 1024 * 1024; // 100MB
-    if (file.size > maxSize) {
+    try {
+      const file = files[0];
+      const name = getFileNameWithoutExtension(file.name);
+      onFileSelect(file, name);
+      
       toast({
-        title: "File too large",
-        description: "Please select a file smaller than 100MB",
+        title: "File loaded",
+        description: `${name} has been loaded successfully`
+      });
+    } catch (error) {
+      console.error('Error processing file:', error);
+      toast({
+        title: "Error",
+        description: "Failed to process the selected file",
         variant: "destructive"
       });
-      return;
     }
-
-    const name = getFileNameWithoutExtension(file.name);
-    onFileSelect(file, name);
-    
-    toast({
-      title: "File loaded",
-      description: `${name} has been loaded successfully`
-    });
   }, [onFileSelect, toast]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
