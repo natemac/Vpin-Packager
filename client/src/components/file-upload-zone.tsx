@@ -19,6 +19,18 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
     if (!files || files.length === 0) return;
 
     const file = files[0];
+    
+    // Add file size check (100MB limit)
+    const maxSize = 100 * 1024 * 1024; // 100MB
+    if (file.size > maxSize) {
+      toast({
+        title: "File too large",
+        description: "Please select a file smaller than 100MB",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const name = getFileNameWithoutExtension(file.name);
     onFileSelect(file, name);
     

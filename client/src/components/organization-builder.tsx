@@ -51,7 +51,32 @@ export default function OrganizationBuilder({
   const handleFileSelect = (itemId: string, files: FileList | null) => {
     if (!files) return;
     
+    // Limit file count to prevent browser crashes
+    const maxFiles = 100;
+    const maxSize = 50 * 1024 * 1024; // 50MB per file
+    
     const fileArray = Array.from(files);
+    
+    if (fileArray.length > maxFiles) {
+      toast({
+        title: "Too many files",
+        description: `Maximum allowed: ${maxFiles} files`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Check individual file sizes
+    const oversizedFiles = fileArray.filter(file => file.size > maxSize);
+    if (oversizedFiles.length > 0) {
+      toast({
+        title: "Files too large",
+        description: `Maximum size per file: 50MB`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
     onUpdateItem(itemId, { files: fileArray });
   };
 
@@ -87,18 +112,49 @@ export default function OrganizationBuilder({
   }, []);
 
   const handleCardClick = useCallback((item: OrganizationItem) => {
-    // Use a simpler approach with a permanent hidden input
-    if (fileInputRef.current) {
-      fileInputRef.current.multiple = item.type !== 'single';
-      fileInputRef.current.onchange = (e) => {
+    // Create a temporary file input for this specific item
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = item.type !== 'single';
+    
+    // Remove webkitdirectory to prevent crashes - use multiple files instead
+    // if (item.type === 'folder') {
+    //   input.webkitdirectory = true;
+    // }
+    
+    input.onchange = (e) => {
+      try {
         const files = (e.target as HTMLInputElement).files;
         handleFileSelect(item.id, files);
-        // Reset the input value so the same file can be selected again
-        (e.target as HTMLInputElement).value = '';
-      };
-      fileInputRef.current.click();
+      } catch (error) {
+        console.error('Error handling file selection:', error);
+        toast({
+          title: "File selection error",
+          description: "Failed to process selected files",
+          variant: "destructive"
+        });
+      } finally {
+        // Clean up the temporary input
+        if (input.parentNode) {
+          document.body.removeChild(input);
+        }
+      }
+    };
+    
+    // Add error handling for the input creation
+    try {
+      input.style.display = 'none';
+      document.body.appendChild(input);
+      input.click();
+    } catch (error) {
+      console.error('Error creating file input:', error);
+      toast({
+        title: "Browser error",
+        description: "Unable to open file browser",
+        variant: "destructive"
+      });
     }
-  }, []);
+  }, [onUpdateItem]);
 
   const openAddDialog = (type: 'single' | 'multiple' | 'folder') => {
     setDialogType(type);
@@ -438,6 +494,7 @@ export default function OrganizationBuilder({
                     id="dialog-files"
                     type="file"
                     multiple={dialogType !== 'single'}
+                    {...(dialogType === 'folder' ? { webkitdirectory: '' } : {})}
                     onChange={(e) => setDialogData(prev => ({ ...prev, files: e.target.files }))}
                     className="hidden"
                   />
@@ -452,7 +509,14 @@ export default function OrganizationBuilder({
                   <span className="text-sm text-slate-500">
                     {dialogData.files && dialogData.files.length > 0 
                       ? (dialogType === 'folder' 
-                          ? `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`
+                          ? (() => {
+                              const firstFile = Array.from(dialogData.files)[0];
+                              if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
+                                const folderName = firstFile.webkitRelativePath.split('/')[0];
+                                return `1 folder selected: ${folderName}`;
+                              }
+                              return `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected`;
+                            })()
                           : `${dialogData.files.length} file${dialogData.files.length !== 1 ? 's' : ''} selected: ${Array.from(dialogData.files).map(f => f.name).join(', ')}`)
                       : 'No file selected.'}
                   </span>
