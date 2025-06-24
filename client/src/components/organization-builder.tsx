@@ -268,7 +268,7 @@ export default function OrganizationBuilder({
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center">
             <Plus className="text-primary mr-2 h-5 w-5" />
-            File Organization Structure
+            Item Option Structure
           </div>
           {onShowPresetDialog && (
             <Button
