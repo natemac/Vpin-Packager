@@ -96,6 +96,7 @@ This is a client-side file organization and packaging tool specifically designed
 - June 24, 2025: Removed all database dependencies and server-side code - app is now fully client-side static
 - June 24, 2025: Fixed syntax error in organization-builder.tsx and restored application functionality
 - June 24, 2025: Enhanced edit dialog to display actual file names when files are added via drag and drop
+- June 24, 2025: Fixed edit dialog to properly populate with existing files from drag and drop operations
 
 ## User Preferences
 

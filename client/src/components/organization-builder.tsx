@@ -183,8 +183,16 @@ export default function OrganizationBuilder({
     setDialogType(item.type);
     setEditingItem(item.id);
 
-    // Don't try to recreate FileList - just show file count info
+    // Create a FileList-like object from item files for dialog display
     let fileList = null;
+    if (item.files && item.files.length > 0) {
+      // Create a simple object that mimics FileList interface
+      const filesArray = [...item.files];
+      fileList = Object.assign(filesArray, { 
+        length: filesArray.length,
+        item: (index: number) => filesArray[index] || null
+      }) as FileList;
+    }
 
     setDialogData({
       label: item.label,
