@@ -1,4 +1,4 @@
-export const APP_VERSION = "0.1-250624_2033";
+export const APP_VERSION = "0.1-250624_2130";
 
 export interface PresetItem {
   id: string;
