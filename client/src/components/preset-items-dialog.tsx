@@ -265,9 +265,25 @@ export default function PresetItemsDialog({
                           border rounded-lg p-3 cursor-pointer transition-all duration-200
                           ${isSelected 
                             ? 'border-primary bg-primary/5 shadow-sm' 
-                            : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                            : 'border-border'
                           }
                         `}
+                        style={!isSelected ? {
+                          '--tw-border-opacity': '1',
+                          borderColor: 'var(--border)',
+                        } : {}}
+                        onMouseEnter={(e) => {
+                          if (!isSelected) {
+                            e.currentTarget.style.backgroundColor = 'var(--item-hover-bg)';
+                            e.currentTarget.style.borderColor = 'var(--item-hover-border)';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isSelected) {
+                            e.currentTarget.style.backgroundColor = '';
+                            e.currentTarget.style.borderColor = 'var(--border)';
+                          }
+                        }}
                         onClick={() => handleItemToggle(item.id)}
                       >
                         <div className="flex items-center justify-between">

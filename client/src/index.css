@@ -26,6 +26,8 @@
   --section-heading: #282c30;
   --item-label: #0f172a;
   --item-count: #475569;
+  --item-hover-bg: hsl(210, 40%, 96%);
+  --item-hover-border: hsl(220, 13%, 85%);
 }
 
 .dark {
@@ -52,6 +54,8 @@
   --section-heading: hsl(0, 0%, 90%);
   --item-label: hsl(0, 0%, 95%);
   --item-count: hsl(0, 0%, 70%);
+  --item-hover-bg: rgba(255, 255, 255, 0.05);
+  --item-hover-border: rgba(255, 255, 255, 0.15);
 }
 
 @layer base {
