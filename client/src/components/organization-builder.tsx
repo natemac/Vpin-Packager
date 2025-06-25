@@ -56,6 +56,22 @@ export default function OrganizationBuilder({
     onUpdateItem(itemId, { files: fileArray });
   };
 
+  // Helper function to get the display name for folders (same logic as zip generator)
+  const getFolderDisplayName = (item: OrganizationItem): string => {
+    if (item.options.renameFolder) {
+      return item.label || `Folder (${item.files?.length || 0} files)`;
+    } else {
+      // Extract the actual folder name from the first file's webkitRelativePath
+      const firstFile = item.files?.[0];
+      if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
+        const pathParts = firstFile.webkitRelativePath.split('/');
+        return pathParts[0] || item.label || `Folder (${item.files?.length || 0} files)`;
+      } else {
+        return item.label || `Folder (${item.files?.length || 0} files)`;
+      }
+    }
+  };
+
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -376,7 +392,7 @@ export default function OrganizationBuilder({
                         {item.type === 'single' && item.files[0] 
                           ? ` • ${item.files[0].name}`
                           : item.type === 'folder' && item.files[0]
-                          ? ` • ${item.files[0].webkitRelativePath?.split('/')[0] || item.files[0].name}`
+                          ? ` • ${getFolderDisplayName(item)}`
                           : item.type === 'multiple'
                           ? ' • multiple files'
                           : ''
