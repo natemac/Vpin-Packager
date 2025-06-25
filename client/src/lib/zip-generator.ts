@@ -38,6 +38,9 @@ export async function generateZipFromOrganization(
         if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
           const pathParts = firstFile.webkitRelativePath.split('/');
           folderName = pathParts[0] || item.label || `Folder_${Date.now()}`;
+        } else if (firstFile && firstFile.name) {
+          // For drag and drop, webkitRelativePath might be empty, so use the file name
+          folderName = firstFile.name;
         } else {
           folderName = item.label || `Folder_${Date.now()}`;
         }
@@ -147,6 +150,10 @@ export function generateFileTree(items: OrganizationItem[], tableName: string): 
         if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
           const pathParts = firstFile.webkitRelativePath.split('/');
           folderName = pathParts[0] || item.label || `Folder (${item.files.length} files)`;
+        } else if (firstFile && firstFile.name) {
+          // For drag and drop, webkitRelativePath might be empty, so use the file name
+          // If the file name is the same as a folder name (like when dragging a folder), use that
+          folderName = firstFile.name;
         } else {
           folderName = item.label || `Folder (${item.files.length} files)`;
         }

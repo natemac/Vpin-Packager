@@ -66,6 +66,10 @@ export default function OrganizationBuilder({
       if (firstFile && 'webkitRelativePath' in firstFile && firstFile.webkitRelativePath) {
         const pathParts = firstFile.webkitRelativePath.split('/');
         return pathParts[0] || item.label || `Folder (${item.files?.length || 0} files)`;
+      } else if (firstFile && firstFile.name) {
+        // For drag and drop, webkitRelativePath might be empty, so use the file name
+        // If the file name is the same as a folder name (like when dragging a folder), use that
+        return firstFile.name;
       } else {
         return item.label || `Folder (${item.files?.length || 0} files)`;
       }
@@ -100,14 +104,6 @@ export default function OrganizationBuilder({
     target.classList.remove('drag-over');
 
     const files = e.dataTransfer.files;
-    
-    // Debug logging for drag and drop
-    console.log('Drag and drop files:', Array.from(files).map(f => ({
-      name: f.name,
-      webkitRelativePath: f.webkitRelativePath,
-      type: f.type
-    })));
-    
     handleFileSelect(item.id, files);
   }, []);
 
@@ -134,13 +130,6 @@ export default function OrganizationBuilder({
         try {
           const files = (e.target as HTMLInputElement).files;
           if (files) {
-            // Debug logging for browse files
-            console.log('Browse files:', Array.from(files).map(f => ({
-              name: f.name,
-              webkitRelativePath: f.webkitRelativePath,
-              type: f.type
-            })));
-            
             // For folder-type items, show appropriate message
             if (item.type === 'folder' && files.length > 0) {
               const hasDirectorySupport = (input as any).webkitdirectory;
