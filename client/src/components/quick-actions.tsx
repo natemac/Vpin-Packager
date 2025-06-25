@@ -127,7 +127,7 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
               <Button 
                 variant="outline" 
                 onClick={handleLoadTemplate}
-                className="w-full h-10 text-sm text-left"
+                className="w-full h-10 text-sm justify-start"
               >
                 <Download className="mr-2 h-4 w-4" />
                 Load Template
@@ -136,10 +136,19 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
               <Button 
                 variant="outline"
                 onClick={handleSaveTemplate}
-                className="w-full h-10 text-sm text-left"
+                className="w-full h-10 text-sm justify-start"
               >
                 <Save className="mr-2 h-4 w-4" />
                 Save Template
+              </Button>
+
+              <Button
+                variant="outline"
+                className="w-full justify-start h-auto p-3 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                onClick={handleClearInterface}
+              >
+                <Eraser className="mr-2 h-4 w-4" />
+                <span className="text-sm font-medium">Clear Interface</span>
               </Button>
             </div>
           </div>
@@ -149,22 +158,10 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
             <Button 
               variant="outline" 
               onClick={() => window.open('https://express.adobe.com/user-template/urn:aaid:sc:US:f0a0b791-ee5a-4702-9b15-c827bc53fdcf/4f36446b-9956-4b5e-9dc3-5568a1480729?isBrand=false', '_blank')}
-              className="w-full h-10 text-sm text-left"
+              className="w-full h-10 text-sm justify-start"
             >
               <ExternalLink className="mr-2 h-4 w-4" />
               Marquee Backglass Video
-            </Button>
-          </div>
-
-          {/* Interface Actions */}
-          <div className="pt-3 border-t border-slate-200">
-            <Button
-              variant="outline"
-              className="w-full justify-start h-auto p-3 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-              onClick={handleClearInterface}
-            >
-              <Eraser className="mr-2 h-4 w-4" />
-              <span className="text-sm font-medium">Clear Interface</span>
             </Button>
           </div>
         </div>
