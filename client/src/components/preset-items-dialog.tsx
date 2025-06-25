@@ -238,7 +238,7 @@ export default function PresetItemsDialog({
                       </>
                     ) : (
                       <>
-                        <span className="text-sm font-mono px-2 py-1 rounded bg-[#525457] text-[#dee1e3]">
+                        <span className="text-sm font-mono px-2 py-1 rounded bg-muted text-muted-foreground">
                           {parentPaths[category.name] || category.parentPath}
                         </span>
                         <Button
