@@ -100,6 +100,14 @@ export default function OrganizationBuilder({
     target.classList.remove('drag-over');
 
     const files = e.dataTransfer.files;
+    
+    // Debug logging for drag and drop
+    console.log('Drag and drop files:', Array.from(files).map(f => ({
+      name: f.name,
+      webkitRelativePath: f.webkitRelativePath,
+      type: f.type
+    })));
+    
     handleFileSelect(item.id, files);
   }, []);
 
@@ -126,6 +134,13 @@ export default function OrganizationBuilder({
         try {
           const files = (e.target as HTMLInputElement).files;
           if (files) {
+            // Debug logging for browse files
+            console.log('Browse files:', Array.from(files).map(f => ({
+              name: f.name,
+              webkitRelativePath: f.webkitRelativePath,
+              type: f.type
+            })));
+            
             // For folder-type items, show appropriate message
             if (item.type === 'folder' && files.length > 0) {
               const hasDirectorySupport = (input as any).webkitdirectory;
