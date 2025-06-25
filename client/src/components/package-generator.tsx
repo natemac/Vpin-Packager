@@ -87,25 +87,25 @@ export default function PackageGenerator({
       </CardHeader>
       <CardContent>
         {/* Package Summary */}
-        <div className="bg-slate-50 rounded-lg p-4 mb-4">
+        <div className="bg-muted rounded-lg p-4 mb-4">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-slate-500">Total Files:</span>
-              <span className="font-semibold text-slate-900 ml-2">{summary.fileCount}</span>
+              <span className="text-muted-foreground">Total Files:</span>
+              <span className="font-semibold text-foreground ml-2">{summary.fileCount}</span>
             </div>
             <div>
-              <span className="text-slate-500">Est. Size:</span>
-              <span className="font-semibold text-slate-900 ml-2">
+              <span className="text-muted-foreground">Est. Size:</span>
+              <span className="font-semibold text-foreground ml-2">
                 {formatFileSize(summary.totalSize)}
               </span>
             </div>
             <div>
-              <span className="text-slate-500">Folders:</span>
-              <span className="font-semibold text-slate-900 ml-2">{summary.folderCount}</span>
+              <span className="text-muted-foreground">Folders:</span>
+              <span className="font-semibold text-foreground ml-2">{summary.folderCount}</span>
             </div>
             <div>
-              <span className="text-slate-500">Format:</span>
-              <span className="font-semibold text-slate-900 ml-2">ZIP</span>
+              <span className="text-muted-foreground">Format:</span>
+              <span className="font-semibold text-foreground ml-2">ZIP</span>
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@ export default function PackageGenerator({
         {/* Progress Bar */}
         {isGenerating && (
           <div className="mt-4">
-            <div className="flex justify-between text-sm text-slate-600 mb-2">
+            <div className="flex justify-between text-sm text-muted-foreground mb-2">
               <span>Generating package...</span>
               <span>{progress}%</span>
             </div>
@@ -146,7 +146,7 @@ export default function PackageGenerator({
         )}
 
         {!canGenerate && (
-          <p className="text-sm text-slate-500 mt-2 text-center">
+          <p className="text-sm text-muted-foreground mt-2 text-center">
             {!tableName ? 'Upload a table file first' : 'Add files to organize'}
           </p>
         )}
