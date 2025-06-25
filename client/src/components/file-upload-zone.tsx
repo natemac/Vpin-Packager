@@ -76,18 +76,18 @@ export default function FileUploadZone({ onFileSelect, tableName }: FileUploadZo
           className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
             isDragOver
               ? 'border-primary bg-primary/5'
-              : 'border-slate-300 bg-slate-50 hover:border-primary/50 hover:bg-primary/5'
+              : 'border-border bg-muted hover:border-primary/50 hover:bg-primary/5'
           }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={handleClick}
         >
-          <CloudUpload className="mx-auto h-12 w-12 text-slate-400 mb-4" />
-          <p className="text-lg font-medium text-slate-700 mb-2">
+          <CloudUpload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <p className="text-lg font-medium text-foreground mb-2">
             Drag & drop your file here
           </p>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             or click to browse files
           </p>
           <input
