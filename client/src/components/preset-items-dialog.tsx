@@ -278,7 +278,7 @@ export default function PresetItemsDialog({
                             />
                             <div className="flex items-center space-x-2">
                               {getTypeIcon(item.type)}
-                              <span className="font-medium text-slate-900 text-sm">{item.label}</span>
+                              <span className="font-medium text-sm" style={{ color: 'var(--item-label)' }}>{item.label}</span>
                             </div>
                           </div>
                           {getTypeBadge(item.type)}
@@ -297,7 +297,7 @@ export default function PresetItemsDialog({
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t">
-          <div className="text-sm text-slate-600">
+          <div className="text-sm" style={{ color: 'var(--item-count)' }}>
             {selectedItems.size} item{selectedItems.size !== 1 ? 's' : ''} selected
           </div>
           <div className="flex space-x-3">

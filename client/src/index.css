@@ -23,6 +23,9 @@
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
+  --section-heading: #282c30;
+  --item-label: #0f172a;
+  --item-count: #475569;
 }
 
 .dark {
@@ -46,6 +49,9 @@
   --destructive-foreground: hsl(0, 0%, 98%);
   --ring: hsl(240, 4.9%, 83.9%);
   --radius: 0.5rem;
+  --section-heading: hsl(0, 0%, 90%);
+  --item-label: hsl(0, 0%, 95%);
+  --item-count: hsl(0, 0%, 70%);
 }
 
 @layer base {
