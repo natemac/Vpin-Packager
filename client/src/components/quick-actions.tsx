@@ -153,8 +153,9 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
             </div>
           </div>
 
-          {/* External Resources */}
+          {/* Media Creator & Editors */}
           <div className="pt-3 border-t border-slate-200">
+            <h4 className="text-sm font-medium text-slate-700 mb-2">Media Creator & Editors</h4>
             <Button 
               variant="outline" 
               onClick={() => window.open('https://express.adobe.com/user-template/urn:aaid:sc:US:f0a0b791-ee5a-4702-9b15-c827bc53fdcf/4f36446b-9956-4b5e-9dc3-5568a1480729?isBrand=false', '_blank')}
