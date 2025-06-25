@@ -1,5 +1,5 @@
 import { useRef, useCallback, useState } from 'react';
-import { Zap, Eraser, Download, Save } from 'lucide-react';
+import { Zap, Eraser, Download, Save, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -144,7 +144,17 @@ export default function QuickActions({ onLoadTemplate, onSaveTemplate, onClearIn
             </div>
           </div>
 
-          
+          {/* External Resources */}
+          <div className="pt-3 border-t border-slate-200">
+            <Button 
+              variant="outline" 
+              onClick={() => window.open('https://express.adobe.com/user-template/urn:aaid:sc:US:f0a0b791-ee5a-4702-9b15-c827bc53fdcf/4f36446b-9956-4b5e-9dc3-5568a1480729?isBrand=false', '_blank')}
+              className="w-full h-10 text-sm text-left"
+            >
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Marquee Backglass Video
+            </Button>
+          </div>
 
           {/* Interface Actions */}
           <div className="pt-3 border-t border-slate-200">
