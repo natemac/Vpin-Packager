@@ -207,7 +207,7 @@ export default function PresetItemsDialog({
               <div key={category.name} className="space-y-3">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-slate-900">{category.name}</h3>
+                    <h3 className="text-lg font-semibold" style={{ color: 'var(--section-heading)' }}>{category.name}</h3>
                     <Button
                       variant="outline"
                       size="sm"
