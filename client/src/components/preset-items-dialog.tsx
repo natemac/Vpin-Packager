@@ -146,7 +146,7 @@ export default function PresetItemsDialog({
 
   const getTypeBadge = (type: PresetItem['type']) => {
     return (
-      <Badge variant="outline" className="text-xs bg-white">
+      <Badge variant="outline" className="text-xs bg-[#3f3f47]">
         {type}
       </Badge>
     );
@@ -238,7 +238,7 @@ export default function PresetItemsDialog({
                       </>
                     ) : (
                       <>
-                        <span className="text-sm font-mono text-slate-600 bg-slate-100 px-2 py-1 rounded">
+                        <span className="text-sm font-mono px-2 py-1 rounded bg-[#525457] text-[#dee1e3]">
                           {parentPaths[category.name] || category.parentPath}
                         </span>
                         <Button
@@ -253,7 +253,6 @@ export default function PresetItemsDialog({
                     )}
                   </div>
                 </div>
-
                 <div className="grid grid-cols-2 gap-3">
                   {category.items.map((item) => {
                     const isSelected = selectedItems.has(item.id);
@@ -303,7 +302,6 @@ export default function PresetItemsDialog({
                     );
                   })}
                 </div>
-
                 {category !== PINBALL_PRESETS[PINBALL_PRESETS.length - 1] && (
                   <Separator className="my-6" />
                 )}
