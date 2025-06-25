@@ -3,6 +3,7 @@ import { FolderOpen } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
 import { OrganizationItem } from "@/types/organization";
 import { DEFAULT_TABLE_LOCATION, APP_VERSION } from "@/lib/pinball-presets";
+import { ThemeToggle } from "@/components/theme-toggle";
 import FileUploadZone from "@/components/file-upload-zone";
 import OrganizationBuilder from "@/components/organization-builder";
 import FileTreePreview from "@/components/file-tree-preview";
@@ -63,15 +64,16 @@ export default function FileOrganizer() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl font-semibold text-slate-900 flex items-center">
+      <header className="bg-card border-b border-border px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <h1 className="text-2xl font-semibold text-foreground flex items-center">
             <FolderOpen className="text-primary mr-3 h-6 w-6" />
             Virtual Pinball Packager
-            <span className="text-sm font-normal text-slate-500 ml-2">Package & rename files to easily add them to your cabinet.</span>
+            <span className="text-sm font-normal text-muted-foreground ml-2">Package & rename files to easily add them to your cabinet.</span>
           </h1>
+          <ThemeToggle />
         </div>
       </header>
       {/* Main Content */}

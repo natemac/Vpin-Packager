@@ -1,6 +1,7 @@
 import { Switch, Route, Router } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 import FileOrganizer from "@/pages/file-organizer";
 import NotFound from "@/pages/not-found";
 
@@ -19,10 +20,12 @@ function AppRouter() {
 
 function App() {
   return (
-    <TooltipProvider>
-      <Toaster />
-      <AppRouter />
-    </TooltipProvider>
+    <ThemeProvider defaultTheme="light" storageKey="file-organizer-theme">
+      <TooltipProvider>
+        <Toaster />
+        <AppRouter />
+      </TooltipProvider>
+    </ThemeProvider>
   );
 }
 
