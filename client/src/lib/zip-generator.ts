@@ -53,21 +53,54 @@ export async function generateZipFromOrganization(
     for (const file of item.files) {
       let processedFile = file;
       let fileName = file.name;
+      let filePath = fileName;
+
+      // For folder items, handle file structure differently
+      if (item.type === 'folder') {
+        // If the file has webkitRelativePath (from browse), use it to maintain structure
+        if ('webkitRelativePath' in file && file.webkitRelativePath) {
+          const relativePath = file.webkitRelativePath;
+          const pathParts = relativePath.split('/');
+          // Skip the root folder name since we already created it above
+          if (pathParts.length > 1) {
+            filePath = pathParts.slice(1).join('/');
+          } else {
+            filePath = pathParts[pathParts.length - 1];
+          }
+        }
+        // For drag-and-drop folders without webkitRelativePath, just use the filename
+        // The folder structure is flattened but files are still accessible
+      }
 
       // Apply options
-      if (item.options.useTableName) {
+      if (item.options.useTableName && item.type === 'single') {
         const extension = file.name.split('.').pop();
         fileName = `${tableName}.${extension}`;
+        filePath = fileName;
       }
 
       if (item.options.convertToPng && file.type.startsWith('image/')) {
         try {
           const compressionLevel = item.options.pngCompressionLevel || 'low';
           processedFile = await convertImageToPng(file, compressionLevel);
-          if (item.options.useTableName) {
+          if (item.options.useTableName && item.type === 'single') {
             fileName = `${tableName}.png`;
+            filePath = fileName;
           } else {
             fileName = getFileNameWithoutExtension(file.name) + '.png';
+            // Update filePath to reflect the new extension
+            if (item.type === 'folder' && 'webkitRelativePath' in file && file.webkitRelativePath) {
+              const relativePath = file.webkitRelativePath;
+              const pathParts = relativePath.split('/');
+              if (pathParts.length > 1) {
+                const dirPath = pathParts.slice(1, -1);
+                filePath = [...dirPath, fileName].join('/');
+              } else {
+                filePath = fileName;
+              }
+            } else {
+              filePath = fileName;
+            }
           }
         } catch (error) {
           console.warn('Failed to convert image to PNG:', error);
@@ -75,12 +108,29 @@ export async function generateZipFromOrganization(
       }
 
       // Add file to zip
-      targetFolder.file(fileName, processedFile);
-      processedItems++;
+      try {
+        // Validate file before adding to zip
+        if (!file || !file.name) {
+          throw new Error('Invalid file object');
+        }
+        
+        // Check if file is readable
+        if (file.size === 0 && file.type === '') {
+          // This might be a directory entry, skip it
+          console.warn('Skipping directory entry:', file.name);
+          continue;
+        }
 
-      // Update progress
-      if (onProgress) {
-        onProgress(Math.round((processedItems / totalItems) * 100));
+        targetFolder.file(filePath, processedFile);
+        processedItems++;
+
+        // Update progress
+        if (onProgress) {
+          onProgress(Math.round((processedItems / totalItems) * 100));
+        }
+      } catch (error) {
+        console.error('Error adding file to zip:', error, 'File:', file.name, 'Path:', filePath, 'Size:', file.size, 'Type:', file.type);
+        throw new Error(`Failed to add file ${file.name} to ZIP package. ${error}`);
       }
     }
   }
