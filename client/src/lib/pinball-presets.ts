@@ -130,7 +130,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-cover",
         label: "Cover",
         type: "single",
-        defaultLocation: "covers/",
+        defaultLocation: "cover/",
         useTableName: true,
         category: "Pinball Emporium Media"
       },
@@ -138,7 +138,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-topper",
         label: "Topper",
         type: "single",
-        defaultLocation: "toppers/",
+        defaultLocation: "topper/",
         useTableName: true,
         category: "Pinball Emporium Media"
       },
@@ -146,7 +146,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-marquee",
         label: "Marquee",
         type: "single",
-        defaultLocation: "marquees/",
+        defaultLocation: "video_marquee/",
         useTableName: true,
         category: "Pinball Emporium Media"
       },
@@ -154,7 +154,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-table",
         label: "Table",
         type: "single",
-        defaultLocation: "tables/",
+        defaultLocation: "video/",
         useTableName: true,
         category: "Pinball Emporium Media"
       },
@@ -162,7 +162,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-logo",
         label: "Logo",
         type: "single",
-        defaultLocation: "logos/",
+        defaultLocation: "logo/",
         useTableName: true,
         category: "Pinball Emporium Media"
       },
@@ -170,7 +170,7 @@ export const PINBALL_PRESETS: PresetCategory[] = [
         id: "pe-credit",
         label: "Credit",
         type: "single",
-        defaultLocation: "credits/",
+        defaultLocation: "credit/",
         useTableName: true,
         category: "Pinball Emporium Media"
       },
